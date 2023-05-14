@@ -59,7 +59,7 @@ Tutorial.getAll = (title, result) => {
 };
 
 Tutorial.getAllPublished = result => {
-  sql.query("SELECT * FROM Persons WHERE LastName='Saurabh'", (err, res) => {
+  sql.query("select * from commentry limit 0,10;", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
