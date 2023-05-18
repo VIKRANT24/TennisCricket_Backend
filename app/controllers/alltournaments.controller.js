@@ -64,3 +64,19 @@ exports.getUserMainTournament = (req, res) => {
     } else res.send(data);
   });
 };
+
+exports.getAllTournaments = (req, res) => {
+  AllTournaments.getAllTournaments((err, data) => {
+  if (err) {
+    if (err.kind === "not_found") {
+      res.status(404).send({
+        message: `Main Tournament not found with id ${req.body.mainTournamentid}.`
+      });
+    } else {
+      res.status(500).send({
+        message: "Error retrieving Tournament with id " + req.body.mainTournamentid
+      });
+    }
+  } else res.send(data);
+});
+};

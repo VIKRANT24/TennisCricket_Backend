@@ -28,7 +28,7 @@ AllTournaments.findUserByID = (id, result) => {
         return;
       }  
       if (res.length) {
-        result(null, res[0]);
+        result(null, res);
         return;
       }
       result({ kind: "not_found" }, null);
@@ -43,7 +43,7 @@ AllTournaments.findUserByID = (id, result) => {
         return;
       }
       if (res.length) {
-        result(null, res[0]);
+        result(null, res);
         return;
       }
       result({ kind: "not_found" }, null);
@@ -58,7 +58,21 @@ AllTournaments.findUserByID = (id, result) => {
         return;
       }
       if (res.length) {
-        result(null, res[0]);
+        result(null, res);
+        return;
+      }
+      result({ kind: "not_found" }, null);
+    });
+  };
+  AllTournaments.getAllTournaments = (result) => {
+    sql.query('SELECT T.*,MT.TournamentName FROM `tournaments` as T inner join maintournaments as MT on T.`mainTournamentid`=MT.mainTournamentid order by MT.`mainTournamentid`,Tournamentid',(err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        result(null, res);
         return;
       }
       result({ kind: "not_found" }, null);
