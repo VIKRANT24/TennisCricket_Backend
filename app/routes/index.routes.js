@@ -8,7 +8,7 @@ module.exports = app => {
   router.post("/userMaster/getUserTournament", userMaster.getUserTournament);
   router.post("/userMaster/getUserMainTournament", userMaster.getUserMainTournament);
   router.get("/userMaster/getAllTournaments", userMaster.getAllTournaments);
-
+  router.get("/userMaster/getAllUser", userMaster.getAllUser);
 
   app.use('/api', router);
 };

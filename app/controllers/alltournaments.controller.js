@@ -1,82 +1,87 @@
 const AllTournaments = require("../models/alltournaments.model");
-
+const Rosponse = require("../config/response");
+const response = new Rosponse();
 // Find a single Tutorial by Id
 exports.findUserByID = (req, res) => {
     AllTournaments.findUserByID(req.body.id, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `User not found with id ${req.body.id}.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Error retrieving User with id " + req.body.id
-        });
+      if (err) {
+        if (err.kind === "not_found") {
+            response.sendNoData(req, res)
+        } else {
+            response.sendError(req, res)
+        }
+      } else{
+        response.sendResponse(req, res, data)
       }
-    } else res.send(data);
   });
 };
 
 exports.getUserTournamentID = (req, res) => {
-    AllTournaments.getUserTournamentID(req.body.id, (err, data) => {
+    AllTournaments.getUserTournamentID(req.body.id, (err, data) => {  
     if (err) {
       if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `User Data not found with id ${req.body.id}.`
-        });
+          response.sendNoData(req, res)
       } else {
-        res.status(500).send({
-          message: "Error retrieving Tournament with id " + req.body.id
-        });
+          response.sendError(req, res)
       }
-    } else res.send(data);
+    } else{
+      response.sendResponse(req, res, data)
+    }
   });
 };
 
 exports.getUserTournament = (req, res) => {
     AllTournaments.getUserTournament(req.body.tour_id, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Tournament not found with id ${req.body.tour_id}.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Error retrieving Tournament with id " + req.body.tour_id
-        });
+      if (err) {
+        if (err.kind === "not_found") {
+            response.sendNoData(req, res)
+        } else {
+            response.sendError(req, res)
+        }
+      } else{
+        response.sendResponse(req, res, data)
       }
-    } else res.send(data);
   });
 };
 
 exports.getUserMainTournament = (req, res) => {
     AllTournaments.getUserMainTournament(req.body.mainTournamentid, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Main Tournament not found with id ${req.body.mainTournamentid}.`
-        });
-      } else {
-        res.status(500).send({
-          message: "Error retrieving Tournament with id " + req.body.mainTournamentid
-        });
+      if (err) {
+        if (err.kind === "not_found") {
+            response.sendNoData(req, res)
+        } else {
+            response.sendError(req, res)
+        }
+      } else{
+        response.sendResponse(req, res, data)
       }
-    } else res.send(data);
   });
 };
 
 exports.getAllTournaments = (req, res) => {
   AllTournaments.getAllTournaments((err, data) => {
-  if (err) {
-    if (err.kind === "not_found") {
-      res.status(404).send({
-        message: `Main Tournament not found with id ${req.body.mainTournamentid}.`
-      });
-    } else {
-      res.status(500).send({
-        message: "Error retrieving Tournament with id " + req.body.mainTournamentid
-      });
+    if (err) {
+      if (err.kind === "not_found") {
+          response.sendNoData(req, res)
+      } else {
+          response.sendError(req, res)
+      }
+    } else{
+      response.sendResponse(req, res, data)
     }
-  } else res.send(data);
+});
+};
+
+exports.getAllUser = (req, res) => {
+  AllTournaments.getAllUser((err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+          response.sendNoData(req, res)
+      } else {
+          response.sendError(req, res)
+      }
+    } else{
+      response.sendResponse(req, res, data)
+    }
 });
 };
