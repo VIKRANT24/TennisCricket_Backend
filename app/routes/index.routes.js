@@ -1,5 +1,6 @@
 module.exports = app => {
   const userMaster = require("../controllers/alltournaments.controller");
+  const tournament = require("../controllers/tournament.controller");
   var router = require("express").Router();
 
   // Get User Data Based On User ID
@@ -10,5 +11,7 @@ module.exports = app => {
   router.get("/userMaster/getAllTournaments", userMaster.getAllTournaments);
   router.get("/userMaster/getAllUser", userMaster.getAllUser);
 
+  //Get Tournament Related Operation(assign user, delete tournament, view tournament)
+  router.post("/tournament/deleteTournament", tournament.deleteUser);
   app.use('/api', router);
 };

@@ -1,14 +1,14 @@
 class Response {
 
     constructor() {
-        // this.bindResponse(req, res);
+
     }
 
     sendResponse(req, res, data) {
         this.request = req;
         res.status(200).send({
             message: "",
-            statusCode: 1,
+            statusCode: "00",
             data:data      
         });
     }
@@ -16,7 +16,7 @@ class Response {
         this.request = req;
         res.status(500).send({
             message: "Error In Retrieving Data",
-            statusCode: 0,
+            statusCode: "01",
             data:[]        
         });
     }
@@ -24,7 +24,7 @@ class Response {
         this.request = req;
         res.status(404).send({
           message: "No Record Found",
-          statusCode: 0,
+          statusCode: "01",
           data:[]         
         });
     }
