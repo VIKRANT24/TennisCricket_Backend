@@ -17,8 +17,7 @@ User.addUser = (user_id, username, password, result) => {
         return;
       }
       else{
-        var permissions = 'mytournaments,resetpassword,viewmatches,editmatch,editteam,managevideo,creatematch,viewscorecard';
-        sql.query("INSERT INTO usermaster (user_id,username,password,userstate,cur_tourid,role,permissions) VALUES (?,?,?,?,?,?,?)", [user_id,username,password,'Active','-',2,permissions],(err, res) => {
+        sql.query("INSERT INTO usermaster (user_id,username,password,userstate,cur_tourid) VALUES (?,?,?,?,?)", [user_id,username,password,'Active','-'],(err, res) => {
             if (err) {
                 console.log("error: ", err);
                 result(err, null);
