@@ -4,26 +4,26 @@ class Response {
 
     }
 
-    sendResponse(req, res, data) {
+    sendResponse(req, res, data, message) {
         this.request = req;
         res.status(200).send({
-            message: "",
+            message: message,
             statusCode: "00",
             data:data      
         });
     }
-    sendError(req, res) {
+    sendError(req, res, message) {
         this.request = req;
         res.status(500).send({
-            message: "Error In Retrieving Data",
+            message: message,
             statusCode: "01",
             data:[]        
         });
     }
-    sendNoData(req, res) {
+    sendNoData(req, res, message) {
         this.request = req;
         res.status(404).send({
-          message: "No Record Found",
+          message: message,
           statusCode: "01",
           data:[]         
         });
