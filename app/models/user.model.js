@@ -13,7 +13,7 @@ User.addUser = (user_id, username, password, result) => {
         return;
       }
       if (res.length) {
-        result({ kind: "use already exist" }, null);
+        result({ kind: "User already exist" }, null);
         return;
       }
       else{
