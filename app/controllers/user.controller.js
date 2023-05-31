@@ -8,7 +8,7 @@ exports.addUser = (req, res) => {
         if (err.kind === "User already exist") {
             response.sendNoData(req, res, "User already exist")
         } else {
-            response.sendError(req, res, "Please try again later")
+            response.sendError(req, res, "Please try again")
         }
       } else{
         response.sendResponse(req, res, data, "User has been added successfully")

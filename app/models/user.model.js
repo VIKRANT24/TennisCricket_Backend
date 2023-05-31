@@ -23,11 +23,10 @@ User.addUser = (user_id, username, password, result) => {
                 result(err, null);
                 return;
               }
-              if (res.length) {
-                result(null, res[0]);
+             else{
+                result(null, []);
                 return;
               }
-              result({ kind: "not_found" }, null);
           });
       }
     });
