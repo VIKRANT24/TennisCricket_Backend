@@ -20,12 +20,22 @@ exports.fetchRegisterUser = (req, res) => {
     User.fetchRegisterUser((err, data) => {
       if (err) {
         if (err.kind === "not_found") {
-            response.sendNoData(req, res)
+            response.sendNoData(req, res, "No User Found")
         } else {
-            response.sendError(req, res)
+            response.sendError(req, res, "Please try again")
         }
       } else{
-        response.sendResponse(req, res, data)
+        response.sendResponse(req, res, data, "User list has been fetched successfully.")
       }
   });
+};
+
+exports.resetPassword = (req, res) => {
+  User.resetPassword(req.body.user_id, req.body.password,(err, data) => {
+    if (err) {
+      response.sendError(req, res, "Please try again")
+    } else{
+      response.sendResponse(req, res, data, "Password has been reset successfully.")
+    }
+});
 };

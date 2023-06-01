@@ -17,7 +17,8 @@ User.addUser = (user_id, username, password, result) => {
         return;
       }
       else{
-        sql.query("INSERT INTO usermaster (user_id,username,password,userstate,cur_tourid) VALUES (?,?,?,?,?)", [user_id,username,password,'Active','-'],(err, res) => {
+        var permissions = 'mytournaments,resetpassword,viewmatches,editmatch,editteam,managevideo,creatematch,viewscorecard';
+        sql.query("INSERT INTO usermaster (user_id,username,password,userstate,cur_tourid,role,permissions) VALUES (?,?,?,?,?,?,?)", [user_id,username,password,'Active','-',2,permissions],(err, res) => {
             if (err) {
                 console.log("error: ", err);
                 result(err, null);
@@ -46,4 +47,19 @@ User.addUser = (user_id, username, password, result) => {
           result({ kind: "not_found" }, null);
       });
     };
+
+    User.resetPassword = (user_id, password, result) => {
+      sql.query("UPDATE usermaster SET ? WHERE user_id =?",[{password:password}, user_id], (err, res) => {
+          if (err) {
+              console.log("error: ", err);
+              result(err, null);
+              return;
+            }
+            else{
+              result(null, []);
+              return;
+            }
+        });
+      };
   module.exports = User;
+  
