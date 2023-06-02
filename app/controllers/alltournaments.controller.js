@@ -11,7 +11,7 @@ exports.findUserByID = (req, res) => {
             response.sendError(req, res, "Please try again");
         }
       } else{
-        response.sendResponse(req, res, data, "");
+        response.sendResponse(req, res, data, "User data has been fetched successfully");
       }
   });
 };
@@ -25,7 +25,7 @@ exports.getUserTournamentID = (req, res) => {
           response.sendError(req, res, "Please try again");
       }
     } else{
-      response.sendResponse(req, res, data,"");
+      response.sendResponse(req, res, data,"Tournament ID has been fetched successfully");
     }
   });
 };
@@ -39,7 +39,7 @@ exports.getUserTournament = (req, res) => {
             response.sendError(req, res, "Please try again");
         }
       } else{
-        response.sendResponse(req, res, data,"");
+        response.sendResponse(req, res, data,"Tournament has been fetched successfully");
       }
   });
 };
@@ -53,7 +53,7 @@ exports.getUserMainTournament = (req, res) => {
             response.sendError(req, res, "Please try again");
         }
       } else{
-        response.sendResponse(req, res, data,"");
+        response.sendResponse(req, res, data,"Tournament has been fetched successfully");
       }
   });
 };
@@ -67,7 +67,7 @@ exports.getAllTournaments = (req, res) => {
           response.sendError(req, res, "Please try again");
       }
     } else{
-      response.sendResponse(req, res, data,"");
+      response.sendResponse(req, res, data,"Tournament has been fetched successfully");
     }
 });
 };
@@ -81,7 +81,7 @@ exports.getAllUser = (req, res) => {
           response.sendError(req, res, "Please try again");
       }
     } else{
-      response.sendResponse(req, res, data,"");
+      response.sendResponse(req, res, data,"User list has been fetched successfully.");
     }
 });
 };

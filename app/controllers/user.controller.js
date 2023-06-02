@@ -25,7 +25,7 @@ exports.fetchRegisterUser = (req, res) => {
             response.sendError(req, res, "Please try again");
         }
       } else{
-        response.sendResponse(req, res, data, "User list has been fetched successfully.");
+        response.sendResponse(req, res, data, "User list has been fetched successfully");
       }
   });
 };
