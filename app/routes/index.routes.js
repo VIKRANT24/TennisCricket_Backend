@@ -26,9 +26,10 @@ module.exports = app => {
   router.post("/player/addPlayer", player.addPlayer);
   router.get("/player/fetchPlayerList", player.fetchPlayerList);
 
-    //Admin Related Operation(add Sub Admin, view Sub Admin, view Sub Admi Permission)
-    router.post("/subAdmin/addSubAdmin", subAdmin.addSubAdmin);
-    router.get("/subAdmin/fetchSubAdmin", subAdmin.fetchSubAdmin);
+  //Admin Related Operation(add Sub Admin, view Sub Admin, view Sub Admi Permission)
+  router.post("/subAdmin/addSubAdmin", subAdmin.addSubAdmin);
+  router.get("/subAdmin/fetchSubAdmin", subAdmin.fetchSubAdmin); 
+  router.post("/subAdmin/editPermission", subAdmin.editPermission);
 
   app.use('/api', router);
 };
