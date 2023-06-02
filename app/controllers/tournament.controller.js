@@ -6,12 +6,12 @@ exports.deleteUser = (req, res) => {
     Tournament.deleteUser(req.body.tour_id, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
-            response.sendNoData(req, res)
+            response.sendNoData(req, res,"No Record Found");
         } else {
-            response.sendError(req, res)
+            response.sendError(req, res, "Please try again");
         }
       } else{
-        response.sendResponse(req, res, data)
+        response.sendResponse(req, res, [],"Delete User Successfully");
       }
   });
 };

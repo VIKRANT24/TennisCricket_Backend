@@ -20,7 +20,7 @@ exports.fetchPlayerList = (req, res) => {
     User.fetchPlayerList((err, data) => {
       if (err) {
         if (err.kind === "not_found") {
-            response.sendNoData(req, res, "No player found");
+            response.sendNoData(req, res, "No Record Found");
         } else {
             response.sendError(req, res, "Please try again");
         }
