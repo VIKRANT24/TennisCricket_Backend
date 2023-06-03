@@ -13,6 +13,7 @@ module.exports = app => {
   router.post("/userMaster/getUserMainTournament", userMaster.getUserMainTournament);
   router.get("/userMaster/getAllTournaments", userMaster.getAllTournaments);
   router.get("/userMaster/getAllUser", userMaster.getAllUser);
+  router.post("/userMaster/linkUserWithTournament", userMaster.linkUserWithTournament);
 
   //Get Tournament Related Operation(assign user, delete tournament, view tournament)
   router.post("/tournament/deleteTournament", tournament.deleteUser);

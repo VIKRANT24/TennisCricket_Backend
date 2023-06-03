@@ -79,7 +79,8 @@ AllTournaments.findUserByID = (id, result) => {
     });
   };
   AllTournaments.getAllUser = (result) => {
-    sql.query('SELECT * FROM usermaster',(err, res) => {
+    var get = {role: 2};
+    sql.query('SELECT * FROM usermaster WHERE ? ', get,(err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -90,6 +91,19 @@ AllTournaments.findUserByID = (id, result) => {
         return;
       }
       result({ kind: "not_found" }, null);
+    });
+  };
+  AllTournaments.linkUserWithTournament = (user_id, tourid, result) => {
+    sql.query("UPDATE usermaster SET ? WHERE user_id =?",[{cur_tourid:tourid}, user_id], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+     else{
+        result(null, []);
+        return;
+      }
     });
   };
   module.exports = AllTournaments;

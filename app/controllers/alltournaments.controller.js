@@ -85,3 +85,13 @@ exports.getAllUser = (req, res) => {
     }
 });
 };
+
+exports.linkUserWithTournament = (req, res) => {
+  AllTournaments.linkUserWithTournament(req.body.user_id, req.body.tourid, (err, data) => {
+    if (err) {
+      response.sendError(req, res, "Please try again");
+    } else{
+      response.sendResponse(req, res, data, "Assign user successfully");
+    }
+});
+};
