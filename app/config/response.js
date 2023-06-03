@@ -14,7 +14,7 @@ class Response {
     }
     sendError(req, res, message) {
         this.request = req;
-        res.status(500).send({
+        res.status(200).send({
             message: message,
             statusCode: "01",
             data:[]        
@@ -22,7 +22,7 @@ class Response {
     }
     sendNoData(req, res, message) {
         this.request = req;
-        res.status(404).send({
+        res.status(200).send({
           message: message,
           statusCode: "01",
           data:[]         

@@ -5,8 +5,8 @@ const response = new Rosponse();
 exports.addPlayer = (req, res) => {
     User.addPlayer(req.body.playername, req.body.imgdata, req.body.playerrole, req.body.playermobile, req.body.email, req.body.batting, req.body.bowling, req.body.dob, (err, data) => {
         if (err) {
-            if (err.kind === "User already exist") {
-                response.sendNoData(req, res, "User already exist");
+            if (err.kind === "Mobile number already exist") {
+                response.sendNoData(req, res, "Mobile number already exist");
             } else {
                 response.sendError(req, res, "Please try again");
             }
