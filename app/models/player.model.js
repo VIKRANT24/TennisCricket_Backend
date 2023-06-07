@@ -4,7 +4,7 @@ const sql = require("./db.js");
 const Player = function() {
 };
 
-Player.addPlayer = (playername, imgdata, playerrole, playermobile, email, batting, bowling, dob, result) => {
+Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, batting, bowling, dob, tag, result) => {
   var get = {playermobile: playermobile};
   sql.query('SELECT * FROM players WHERE ? ', get, (err, res) => {
     if (err) {
@@ -17,6 +17,7 @@ Player.addPlayer = (playername, imgdata, playerrole, playermobile, email, battin
       return;
     }
     else{
+    if(tag =="add"){  
     sql.query("INSERT INTO players (playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,imgpath) VALUES (?,?,?,?,?,?,?,?,?)", [playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,""],(err, res) => {
       if (err) {
           console.log("error: ", err);
@@ -28,6 +29,20 @@ Player.addPlayer = (playername, imgdata, playerrole, playermobile, email, battin
         return;
       }
     });
+  }
+  else{
+    sql.query("INSERT INTO players (playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,imgpath) VALUES (?,?,?,?,?,?,?,?,?)", [playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,""],(err, res) => {
+      if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+      }
+      else{
+        result(null, []);
+        return;
+      }
+    });
+  }
   }
 });
 };

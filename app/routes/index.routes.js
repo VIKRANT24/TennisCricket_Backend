@@ -14,6 +14,9 @@ module.exports = app => {
   router.get("/userMaster/getAllTournaments", userMaster.getAllTournaments);
   router.get("/userMaster/getAllUser", userMaster.getAllUser);
   router.post("/userMaster/linkUserWithTournament", userMaster.linkUserWithTournament);
+  router.post("/userMaster/fetchMyTournament", userMaster.fetchMyTournament);
+  router.post("/userMaster/addTournament", userMaster.addTournament);
+  
 
   //Get Tournament Related Operation(assign user, delete tournament, view tournament)
   router.post("/tournament/deleteTournament", tournament.deleteUser);
@@ -25,6 +28,7 @@ module.exports = app => {
 
   //Player Related Operation(add Player, view Player)
   router.post("/player/addPlayer", player.addPlayer);
+  router.post("/player/editPlayer", player.editPlayer);
   router.get("/player/fetchPlayerList", player.fetchPlayerList);
 
   //Admin Related Operation(add Sub Admin, view Sub Admin, view Sub Admi Permission)
