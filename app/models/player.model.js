@@ -4,7 +4,7 @@ const sql = require("./db.js");
 const Player = function() {
 };
 
-Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, batting, bowling, dob, tag, result) => {
+Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, batting, bowling, dob, playerid, tag, result) => {
   var get = {playermobile: playermobile};
   sql.query('SELECT * FROM players WHERE ? ', get, (err, res) => {
     if (err) {
@@ -31,7 +31,7 @@ Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, ba
     });
   }
   else{
-    sql.query("INSERT INTO players (playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,imgpath) VALUES (?,?,?,?,?,?,?,?,?)", [playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,""],(err, res) => {
+    sql.query("UPDATE players SET ? WHERE playerid =?",[{playername:playername,imgdata:imgdata,playerrole:playerrole,playermobile:playermobile,email:email,batting:batting,bowling:bowling,dob:dob,imgpath:imgpath}, playerid], (err, res) => {
       if (err) {
           console.log("error: ", err);
           result(err, null);
