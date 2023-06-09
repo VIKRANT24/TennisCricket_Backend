@@ -5,7 +5,6 @@ class Response {
     }
 
     sendResponse(req, res, data, message) {
-        this.request = req;
         res.status(200).send({
             message: message,
             statusCode: "00",
@@ -13,7 +12,6 @@ class Response {
         });
     }
     sendError(req, res, message) {
-        this.request = req;
         res.status(200).send({
             message: message,
             statusCode: "01",
@@ -21,7 +19,6 @@ class Response {
         });
     }
     sendNoData(req, res, message) {
-        this.request = req;
         res.status(200).send({
           message: message,
           statusCode: "01",

@@ -19,7 +19,7 @@ module.exports = app => {
   
 
   //Get Tournament Related Operation(assign user, delete tournament, view tournament)
-  router.post("/tournament/deleteTournament", tournament.deleteUser);
+  router.post("/tournament/deleteTournament", tournament.deleteTournament);
 
   //User Related Operation(add user, view user, reset password)
   router.post("/user/addUser", user.addUser);

@@ -59,7 +59,7 @@ exports.getUserMainTournament = (req, res) => {
 };
 
 exports.getAllTournaments = (req, res) => {
-  AllTournaments.getAllTournaments((err, data) => {
+  AllTournaments.getAllTournaments((err, tournamentList, userList) => {
     if (err) {
       if (err.kind === "not_found") {
           response.sendNoData(req, res, "No Record Found");
@@ -67,7 +67,12 @@ exports.getAllTournaments = (req, res) => {
           response.sendError(req, res, "Please try again");
       }
     } else{
-      response.sendResponse(req, res, data,"Tournament has been fetched successfully");
+      res.status(200).send({
+        message: "Tournament has been fetched successfully",
+        statusCode: "00",
+        data:tournamentList,
+        userList: userList    
+    });
     }
 });
 };
@@ -101,7 +106,7 @@ exports.fetchMyTournament = (req, res) => {
     if (err) {
       response.sendError(req, res, "Please try again");
     } else{
-      response.sendResponse(req, res, data, "Assign user successfully");
+      response.sendResponse(req, res, data, "Fetch my tournament successfully");
     }
 });
 };
@@ -116,7 +121,7 @@ exports.addTournament = (req, res) => {
               response.sendError(req, res, "Please try again");
           }
       } else {
-          response.sendResponse(req, res, data, "User has been added successfully");
+          response.sendResponse(req, res, data, "Tournament has been added successfully");
       }
   });
 };

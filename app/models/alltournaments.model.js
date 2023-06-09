@@ -72,12 +72,37 @@ AllTournaments.getAllTournaments = (result) => {
       return;
     }
     if (res.length) {
-      result(null, res);
-      return;
+      var get = { role: 2 };
+      sql.query('SELECT * FROM usermaster WHERE ? ', get, (err1, userList) => {
+        if (err1) {
+          console.log("error: ", err);
+          result(err1, null);
+          return;
+        }
+        if (userList.length) {
+          let tournamentList = [];
+          let userarr = [];
+          res.forEach(item => {
+            userList.forEach(item1 =>{
+              if(item.Tournamentid.toString() === item1.cur_tourid){
+                userarr.push(item1)
+              }
+            })
+            tournamentList.push({ ...item, ...{"users":userarr} });
+            userarr =[]
+          });
+          result(null, tournamentList, userList);
+          return;
+        }
+        result({ kind: "not_found" }, null);
+      });
     }
+    else{
     result({ kind: "not_found" }, null);
+    }
   });
 };
+
 AllTournaments.getAllUser = (result) => {
   var get = { role: 2 };
   sql.query('SELECT * FROM usermaster WHERE ? ', get, (err, res) => {
@@ -114,7 +139,7 @@ AllTournaments.fetchMyTournament = (user_id, result) => {
       result(err, null);
       return;
     }
-    else if(res.length) {
+    else if (res.length) {
       var get = { Tournamentid: res[0].tour_id };
       sql.query('SELECT * FROM tournaments WHERE ? ', get, (err, res) => {
         if (err) {
@@ -122,7 +147,7 @@ AllTournaments.fetchMyTournament = (user_id, result) => {
           result(err, null);
           return;
         }
-        else if(res.length) {
+        else if (res.length) {
           var get = { mainTournamentid: res[0].mainTournamentid };
           sql.query('SELECT * FROM maintournaments WHERE ? ', get, (err, res) => {
             if (err) {
@@ -130,59 +155,59 @@ AllTournaments.fetchMyTournament = (user_id, result) => {
               result(err, null);
               return;
             }
-            else if(res.length) {
+            else if (res.length) {
               result(null, res);
               return;
             }
-            else{
-            result({ kind: "not_found" }, null);
+            else {
+              result({ kind: "not_found" }, null);
             }
           });
         }
-        else{
-        result({ kind: "not_found" }, null);
+        else {
+          result({ kind: "not_found" }, null);
         }
       });
     }
-    else{
-    result({ kind: "not_found" }, null);
+    else {
+      result({ kind: "not_found" }, null);
     }
   });
 };
 
 AllTournaments.addTournament = (tournamentType, tournament, organiser, tourType, place, ground, squadlimit, season, ballType, bowlingType, noOfGroups, startDate, endDate, year, result) => {
-  sql.query("INSERT INTO maintournaments (TournamentName) VALUES (?)",[tournament], (err, res) => {
+  sql.query("INSERT INTO maintournaments (TournamentName) VALUES (?)", [tournament], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
-    else{
-      var get = {TournamentName: tournament};
+    else {
+      var get = { TournamentName: tournament };
       sql.query('SELECT * FROM maintournaments WHERE ? ', get, (err, res) => {
         if (err) {
           console.log("error: ", err);
           result(err, null);
           return;
         }
-        else if(res.length) {
-          var mainTournamentid= res[0].mainTournamentid;
-          var tournamentState="ongoing";
-          var decOne="Yes";
-          sql.query("INSERT INTO  tournaments (Season,Year,organisername,Type,Place,Ground,TournamentState,tournament_type,Ball_type,Bowling_type,Squad_limit,declare_one,No_of_Groups,mainTournamentid,startdate,enddate) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[season, year, organiser,tournamentType, place, ground, tournamentState, tourType, ballType, bowlingType, squadlimit, decOne, noOfGroups, mainTournamentid, startDate, endDate], (err, res) => {
+        else if (res.length) {
+          var mainTournamentid = res[0].mainTournamentid;
+          var tournamentState = "ongoing";
+          var decOne = "Yes";
+          sql.query("INSERT INTO  tournaments (Season,Year,organisername,Type,Place,Ground,TournamentState,tournament_type,Ball_type,Bowling_type,Squad_limit,declare_one,No_of_Groups,mainTournamentid,startdate,enddate) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [season, year, organiser, tournamentType, place, ground, tournamentState, tourType, ballType, bowlingType, squadlimit, decOne, noOfGroups, mainTournamentid, startDate, endDate], (err, res) => {
             if (err) {
               console.log("error: ", err);
               result(err, null);
               return;
             }
-            else{
+            else {
               result(null, res);
               return;
             }
           });
         }
-        else{
-        result({ kind: "not_found" }, null);
+        else {
+          result({ kind: "not_found" }, null);
         }
       });
     }

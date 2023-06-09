@@ -1,64 +1,77 @@
 const sql = require("./db.js");
 
 // constructor
-const Player = function() {
+const Player = function () {
 };
 
 Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, batting, bowling, dob, playerid, tag, result) => {
-  var get = {playermobile: playermobile};
-  sql.query('SELECT * FROM players WHERE ? ', get, (err, res) => {
+  var get = { playermobile: playermobile };
+  if (tag == "add") {
+    sql.query('SELECT * FROM players WHERE ? ', get, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        result({ kind: "Mobile number already exist" }, null);
+        return;
+      }
+      else {
+        sql.query("INSERT INTO players (playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,imgpath) VALUES (?,?,?,?,?,?,?,?,?)", [playername, imgdata, playerrole, playermobile, email, batting, bowling, dob, ""], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+          }
+          else {
+            result(null, []);
+            return;
+          }
+        });
+      }
+    });
+  }
+  else {
+    sql.query('SELECT * FROM players WHERE playermobile = ? AND playerid <> ?',[playermobile,playerid], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        result({ kind: "Mobile number already exist"}, null);
+        return;
+      }
+      else{
+        sql.query("UPDATE players SET ? WHERE playerid =?", [{ playername: playername, imgdata: imgdata, playerrole: playerrole, playermobile: playermobile, email: email, batting: batting, bowling: bowling, dob: dob}, playerid], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+          }
+          else {
+            result(null, []);
+            return;
+          }
+        });
+      }
+  });
+}
+};
+
+Player.fetchPlayerList = (result) => {
+  sql.query("SELECT * FROM players", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
     if (res.length) {
-      result({ kind: "Mobile number already exist"}, null);
+      result(null, res);
       return;
     }
-    else{
-    if(tag =="add"){  
-    sql.query("INSERT INTO players (playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,imgpath) VALUES (?,?,?,?,?,?,?,?,?)", [playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,""],(err, res) => {
-      if (err) {
-          console.log("error: ", err);
-          result(err, null);
-          return;
-      }
-      else{
-        result(null, []);
-        return;
-      }
-    });
-  }
-  else{
-    sql.query("UPDATE players SET ? WHERE playerid =?",[{playername:playername,imgdata:imgdata,playerrole:playerrole,playermobile:playermobile,email:email,batting:batting,bowling:bowling,dob:dob,imgpath:imgpath}, playerid], (err, res) => {
-      if (err) {
-          console.log("error: ", err);
-          result(err, null);
-          return;
-      }
-      else{
-        result(null, []);
-        return;
-      }
-    });
-  }
-  }
-});
+    result({ kind: "not_found" }, null);
+  });
 };
-
-  Player.fetchPlayerList = (result) => {
-    sql.query("SELECT * FROM players", (err, res) => {
-        if (err) {
-            console.log("error: ", err);
-            result(err, null);
-            return;
-          }
-          if (res.length) {
-            result(null, res);
-            return;
-          }
-          result({ kind: "not_found" }, null);
-      });
-    };
-  module.exports = Player;
+module.exports = Player;

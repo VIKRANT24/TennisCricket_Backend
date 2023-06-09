@@ -11,7 +11,7 @@ exports.addPlayer = (req, res) => {
                 response.sendError(req, res, "Please try again");
             }
         } else {
-            response.sendResponse(req, res, data, "User has been added successfully");
+            response.sendResponse(req, res, data, "Player has been added successfully");
         }
     });
 };
@@ -24,7 +24,7 @@ exports.editPlayer = (req, res) => {
                 response.sendError(req, res, "Please try again");
             }
         } else {
-            response.sendResponse(req, res, data, "User has been updated successfully");
+            response.sendResponse(req, res, data, "Player has been updated successfully");
         }
     });
 };
