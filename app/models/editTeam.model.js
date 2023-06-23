@@ -76,7 +76,18 @@ EditTeam.getTournamentTeam = (tourid, result) => {
     });
   };
   EditTeam.addPlayerToSquad = (tourid, teamid, playerid, playing11, result) => {
-    sql.query("INSERT INTO teamsquad (tournamentid, teamid, playerid, playing11) VALUES (?,?,?,?)", [tourid, teamid, playerid, playing11], (err, res) => {
+    sql.query('SELECT * FROM teamsquad WHERE teamid = ? AND playerid = ?', [teamid,playerid], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        result({ kind: "player already exist" }, null);
+        return;
+      }
+      else {
+        sql.query("INSERT INTO teamsquad (tournamentid, teamid, playerid, playing11) VALUES (?,?,?,?)", [tourid, teamid, playerid, playing11], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -87,26 +98,42 @@ EditTeam.getTournamentTeam = (tourid, result) => {
         return;
       }
     });
+  }
+});
 };
+
 EditTeam.addPlayersToSquad = (playerList, result) => {
-  playerListData = playerList.map ( (data) => {
-    return [
-      data.tourid,
-      data.teamid,
-      data.playerid,
-      data.playing11
-  ];
-  });
-  sql.query("INSERT INTO teamsquad (tournamentid, teamid, playerid, playing11) VALUES ? WHERE   NOT EXISTS ( SELECT playerid FROM teamsquad WHERE teamid = ?); ", [playerListData,playerList[0]['teamid']], (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        return;
-      }
-      else {
-        result(null, []);
-        return;
-      }
-    });
+  // sql.query("INSERT INTO teamsquad (tournamentid, teamid, playerid, playing11) VALUES ? WHERE   NOT EXISTS ( SELECT playerid FROM teamsquad WHERE teamid = ?); ", [playerList], (err, res) => {
+  //     if (err) {
+  //       console.log("error: ", err);
+  //       result(err, null);
+  //       return;
+  //     }
+  //     else {
+  //       result(null, []);
+  //       return;
+  //     }
+  //   });
 };
+// EditTeam.addPlayersToSquad = (playerList, result) => {
+//   playerListData = playerList.map ( (data) => {
+//     return [
+//       data.tourid,
+//       data.teamid,
+//       data.playerid,
+//       data.playing11
+//   ];
+//   });
+//   sql.query("INSERT INTO teamsquad (tournamentid, teamid, playerid, playing11) VALUES ? WHERE   NOT EXISTS ( SELECT playerid FROM teamsquad WHERE teamid = ?); ", [playerListData,playerList[0]['teamid']], (err, res) => {
+//       if (err) {
+//         console.log("error: ", err);
+//         result(err, null);
+//         return;
+//       }
+//       else {
+//         result(null, []);
+//         return;
+//       }
+//     });
+// };
 module.exports = EditTeam;
