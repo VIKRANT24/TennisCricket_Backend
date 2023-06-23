@@ -4,10 +4,12 @@ module.exports = app => {
   const user = require("../controllers/user.controller");
   const player = require("../controllers/player.controller");
   const subAdmin = require("../controllers/subAdmin.controller");
+  const editMatch = require("../controllers/editMatch.controller");
+  const editTeam = require("../controllers/editTeam.controller");
   var router = require("express").Router();
 
   // Get User Data Based On User ID
-  router.post("/userMaster/getUser", userMaster.findUserByID);
+  router.get("/userMaster/getUser", userMaster.findUserByID);
   router.post("/userMaster/getUserTournamentID", userMaster.getUserTournamentID);
   router.post("/userMaster/getUserTournament", userMaster.getUserTournament);
   router.post("/userMaster/getUserMainTournament", userMaster.getUserMainTournament);
@@ -33,8 +35,18 @@ module.exports = app => {
 
   //Admin Related Operation(add Sub Admin, view Sub Admin, view Sub Admi Permission)
   router.post("/subAdmin/addSubAdmin", subAdmin.addSubAdmin);
-  router.get("/subAdmin/fetchSubAdmin", subAdmin.fetchSubAdmin); 
+  router.get("/subAdmin/fetchSubAdmin", subAdmin.fetchSubAdmin);
   router.post("/subAdmin/editPermission", subAdmin.editPermission);
 
+  //Edit Match Related Operation
+  router.post("/editMatch/fetchAllMatchDetails", editMatch.fetchAllMatchDetails);
+
+  //Edit Team Related Operation
+  router.post("/editTeam/fetchTournamentPlayers", editTeam.fetchTournamentPlayers);
+  router.post("/editTeam/getTournamentTeam", editTeam.getTournamentTeam);
+  router.post("/editTeam/getTournamentTeamSquad", editTeam.getTournamentTeamSquad);
+  router.post("/editTeam/addTeam", editTeam.insertTeam);
+  router.post("/editTeam/addPlayerToSquad", editTeam.addPlayerToSquad);
+  router.post("/editTeam/addPlayersToSquad", editTeam.addPlayersToSquad);
   app.use('/api', router);
 };

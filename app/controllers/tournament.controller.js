@@ -11,7 +11,7 @@ exports.deleteTournament = (req, res) => {
             response.sendError(req, res, "Please try again");
         }
       } else{
-        response.sendResponse(req, res, [],"Delete User Successfully");
+        response.sendResponse(req, res, [],"Delete Tournament Successfully");
       }
   });
 };

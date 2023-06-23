@@ -60,18 +60,34 @@ Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, ba
 }
 };
 
-Player.fetchPlayerList = (result) => {
-  sql.query("SELECT * FROM players", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
-    if (res.length) {
-      result(null, res);
-      return;
-    }
-    result({ kind: "not_found" }, null);
-  });
+Player.fetchPlayerList = (playername, result) => {
+  if(playername == "" || playername == undefined || playername == null){
+    sql.query("SELECT * FROM players", (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        result(null, res);
+        return;
+      }
+      result({ kind: "not_found" }, null);
+    });
+  }
+  else{
+    sql.query("SELECT * FROM players WHERE playername =?", [playername], (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        result(null, res);
+        return;
+      }
+      result({ kind: "not_found" }, null);
+    });
+  }
 };
 module.exports = Player;

@@ -29,7 +29,7 @@ exports.editPlayer = (req, res) => {
     });
 };
 exports.fetchPlayerList = (req, res) => {
-    User.fetchPlayerList((err, data) => {
+    User.fetchPlayerList(req.body.playername, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
             response.sendNoData(req, res, "No Record Found");
