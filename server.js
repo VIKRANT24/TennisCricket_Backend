@@ -11,11 +11,12 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
-app.use(express.json()); /* bodyParser.json() is deprecated */
+// app.use(express.json()); /* bodyParser.json() is deprecated */
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true })); /* bodyParser.urlencoded() is deprecated */
-
+// app.use(express.urlencoded({ extended: true })); /* bodyParser.urlencoded() is deprecated */
+app.use(express.json({limit: "50mb", extended: true, parameterLimit: 500000}))
+app.use(express.urlencoded({limit: "50mb", extended: true, parameterLimit: 500000}))
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
