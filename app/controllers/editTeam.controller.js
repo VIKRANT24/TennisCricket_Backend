@@ -54,23 +54,33 @@ exports.insertTeam = (req, res) => {
     }
   });
 };
+exports.updateTeam = (req, res) => {
+  EditTeam.updateTeam(req.body.id, req.body.teamname, req.body.logopath, req.body.teamcolor, req.body.textcolor, (err, data) => {
+    if (err) {
+      response.sendError(req, res, "Please try again");
+    } else {
+      response.sendResponse(req, res, [], "Team has been updated successfully");
+    }
+  });
+};
+
 exports.addPlayersToSquad = (req, res) => {
   var reqData = req.body.squadPlayers;
-  var error=false
+  var error = false
   for (let i = 0; i < reqData.length; i++) {
     EditTeam.addPlayerToSquad(reqData[i].tourid, reqData[i].teamid, reqData[i].playerid, reqData[i].playing11, (err, data) => {
       if (err) {
-        error=true
+        error = true
       } else {
-        error=false
+        error = false
       }
     });
   }
   if (error) {
-      response.sendError(req, res, "Please try again");
-    }
-  else{
-      response.sendResponse(req, res, [], "Squad has been added successfully");
+    response.sendError(req, res, "Please try again");
+  }
+  else {
+    response.sendResponse(req, res, [], "Squad has been added successfully");
   }
 };
 exports.addPlayerToSquad = (req, res) => {
