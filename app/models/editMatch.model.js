@@ -19,5 +19,31 @@ EditMatch.fetchAllMatchDetails = (tourid,result) => {
         result({ kind: "not_found" }, null);
     });
 };
-
+EditMatch.insertMatch = (matchkey, team1, team2, format, status, start_date, overs, match_state, tournament_id, result) => {
+    var get = { matchkey: matchkey };
+    sql.query('SELECT * FROM listmatches WHERE ? ', get, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (res.length) {
+        result({ kind: "This match is already present" }, null);
+        return;
+      }
+      else {
+        sql.query("INSERT into listmatches (team1, team2, format, status, start_date, overs, match_state, matchkey,tournament_id) values (?,?,?,?,?,?,?,?,?)", [team1, team2, format, status, start_date, overs, match_state, matchkey,tournament_id], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+            result(err, null);
+            return;
+          }
+          else {
+            result(null,[]);
+            return;
+          }
+        });
+      }
+    });
+  };
 module.exports = EditMatch;
