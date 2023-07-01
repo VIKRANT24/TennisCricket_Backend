@@ -11,7 +11,7 @@ exports.addPlayer = (req, res) => {
                 response.sendError(req, res, "Please try again");
             }
         } else {
-            response.sendResponse(req, res, data, "Player has been added successfully");
+            response.sendResponse(req, res, {"playerId":data}, "Player has been added successfully");
         }
     });
 };

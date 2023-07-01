@@ -25,7 +25,7 @@ Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, ba
             return;
           }
           else {
-            result(null, []);
+            result(null, res.insertId);
             return;
           }
         });
