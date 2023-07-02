@@ -96,4 +96,16 @@ exports.addPlayerToSquad = (req, res) => {
     }
   });
 };
-
+exports.updateSquadPlayer = (req, res) => {
+  EditTeam.updateSquadPlayer(req.body.tourid, req.body.teamid, req.body.playerid, req.body.playing11, (err, data) => {
+    if (err) {
+        response.sendError(req, res, "Please try again");
+    } else {
+      if(req.body.playing11=="yes"){
+      response.sendResponse(req, res, data, "Player has been added successfully");
+      }else{
+        response.sendResponse(req, res, data, "Player has been removed successfully");  
+      }
+    }
+  });
+};

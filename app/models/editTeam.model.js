@@ -20,7 +20,7 @@ EditTeam.fetchTournamentPlayers = (tourid, result) => {
   });
 };
 EditTeam.getTournamentTeam = (tourid, result) => {
-  sql.query(`SELECT * FROM teams where tournamentid=${tourid}`, [1], function (err, results) {
+  sql.query(`SELECT * FROM teams where tournamentid=${tourid}`, function (err, results) {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -117,38 +117,18 @@ EditTeam.addPlayerToSquad = (tourid, teamid, playerid, playing11, result) => {
   });
 };
 
-EditTeam.addPlayersToSquad = (playerList, result) => {
-  // sql.query("INSERT INTO teamsquad (tournamentid, teamid, playerid, playing11) VALUES ? WHERE   NOT EXISTS ( SELECT playerid FROM teamsquad WHERE teamid = ?); ", [playerList], (err, res) => {
-  //     if (err) {
-  //       console.log("error: ", err);
-  //       result(err, null);
-  //       return;
-  //     }
-  //     else {
-  //       result(null, []);
-  //       return;
-  //     }
-  //   });
-};
-// EditTeam.addPlayersToSquad = (playerList, result) => {
-//   playerListData = playerList.map ( (data) => {
-//     return [
-//       data.tourid,
-//       data.teamid,
-//       data.playerid,
-//       data.playing11
-//   ];
-//   });
-//   sql.query("INSERT INTO teamsquad (tournamentid, teamid, playerid, playing11) VALUES ? WHERE   NOT EXISTS ( SELECT playerid FROM teamsquad WHERE teamid = ?); ", [playerListData,playerList[0]['teamid']], (err, res) => {
-//       if (err) {
-//         console.log("error: ", err);
-//         result(err, null);
-//         return;
-//       }
-//       else {
-//         result(null, []);
-//         return;
-//       }
-//     });
-// };
+EditTeam.updateSquadPlayer = (tourid, teamid, playerid, playing11, result) => {
+  sql.query("UPDATE teamsquad SET ? WHERE teamid=? and playerid=? and `tournamentid`=?", [{ playing11: playing11}, teamid, playerid, tourid], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    else {
+      console.log(result.insertId);
+      result(null, []);
+      return;
+    }
+  });
+ };
 module.exports = EditTeam;
