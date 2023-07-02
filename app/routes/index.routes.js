@@ -49,6 +49,7 @@ module.exports = app => {
   router.post("/editTeam/addTeam", editTeam.insertTeam);
   router.post("/editTeam/addPlayerToSquad", editTeam.addPlayerToSquad);
   router.post("/editTeam/addPlayersToSquad", editTeam.addPlayersToSquad);
+  router.post("/editTeam/removePlayerFromSquad", editTeam.removePlayerFromSquad);
   router.post("/editTeam/updateTeam", editTeam.updateTeam);
   router.post("/editTeam/updateSquadPlayer", editTeam.updateSquadPlayer);
   app.use('/api', router);

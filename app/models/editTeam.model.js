@@ -125,10 +125,24 @@ EditTeam.updateSquadPlayer = (tourid, teamid, playerid, playing11, result) => {
       return;
     }
     else {
-      console.log(result.insertId);
       result(null, []);
       return;
     }
   });
  };
+
+ EditTeam.removePlayerFromSquad = (tourid, teamid, playerid, result) => {
+  sql.query("DELETE FROM teamsquad WHERE tournamentid=? and teamid=? and playerid=?", [tourid, teamid, playerid], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    else {
+      result(null, []);
+      return;
+    }
+  });
+ };
+ 
 module.exports = EditTeam;
