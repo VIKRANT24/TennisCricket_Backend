@@ -6,6 +6,7 @@ module.exports = app => {
   const subAdmin = require("../controllers/subAdmin.controller");
   const editMatch = require("../controllers/editMatch.controller");
   const editTeam = require("../controllers/editTeam.controller");
+  const statistics = require("../controllers/matchStatistic.controller");
   var router = require("express").Router();
 
   // Get User Data Based On User ID
@@ -52,5 +53,12 @@ module.exports = app => {
   router.post("/editTeam/removePlayerFromSquad", editTeam.removePlayerFromSquad);
   router.post("/editTeam/updateTeam", editTeam.updateTeam);
   router.post("/editTeam/updateSquadPlayer", editTeam.updateSquadPlayer);
+
+  //tournament statistics
+  router.post("/statistics/getTournamentBatting", statistics.fetchTournamentBatting);
+  router.post("/statistics/getTournamentBolwing", statistics.fetchTournamentBolwing);
+  router.post("/statistics/getTournamentPartnership", statistics.fetchTournamentPartnership);
+  router.post("/statistics/getFastestFiftyHundred", statistics.fetchFastestFiftyHundred);
+  
   app.use('/api', router);
 };
