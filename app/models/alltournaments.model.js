@@ -65,7 +65,7 @@ AllTournaments.getUserMainTournament = (mainTournamentid, result) => {
   });
 };
 AllTournaments.getAllTournaments = (result) => {
-  sql.query('SELECT T.*,MT.TournamentName FROM `tournaments` as T inner join maintournaments as MT on T.`mainTournamentid`=MT.mainTournamentid order by MT.`mainTournamentid`,Tournamentid', (err, res) => {
+  sql.query('SELECT T.*,MT.TournamentName FROM `tournaments` as T inner join maintournaments as MT on T.`mainTournamentid`=MT.mainTournamentid order by Tournamentid DESC', (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -105,7 +105,7 @@ AllTournaments.getAllTournaments = (result) => {
 
 AllTournaments.getAllUser = (result) => {
   var get = { role: 2 };
-  sql.query('SELECT * FROM usermaster WHERE ? ', get, (err, res) => {
+  sql.query('SELECT * FROM usermaster WHERE ? ORDER BY id DESC ', get, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);

@@ -47,7 +47,7 @@ SubAdmin.addSubAdmin = (user_id, username, password, permissions, result) => {
   };
   
   SubAdmin.fetchSubAdmin = (result) => {
-    sql.query("SELECT * FROM usermaster where role = '3'", (err, res) => {
+    sql.query("SELECT * FROM usermaster where role = '3' ORDER BY id DESC", (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
