@@ -104,8 +104,7 @@ AllTournaments.getAllTournaments = (result) => {
 };
 
 AllTournaments.getAllUser = (result) => {
-  var get = { role: 2 };
-  sql.query('SELECT * FROM usermaster WHERE ? ORDER BY id DESC ', get, (err, res) => {
+  sql.query('SELECT T.*, (SELECT TournamentName FROM maintournaments WHERE mainTournamentid = TM.`mainTournamentid`) as TournamentName FROM usermaster as T inner join tournaments as TM on T.cur_tourid = TM.Tournamentid WHERE T.role = ? ORDER BY id DESC ', [2], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
