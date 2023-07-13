@@ -112,7 +112,7 @@ exports.fetchMyTournament = (req, res) => {
 };
 
 exports.addTournament = (req, res) => {
-  AllTournaments.addTournament(req.body.tournamentType, req.body.tournament, req.body.organiser, req.body.tourType, req.body.place, req.body.ground, req.body.squadlimit, req.body.season, req.body.ballType, req.body.bowlingType, req.body.noOfGroups, req.body.startDate, req.body.endDate, req.body.year,
+  AllTournaments.addTournament(req.body.tournamentType, req.body.tournament, req.body.organiser, req.body.tourType, req.body.place, req.body.ground, req.body.squadlimit, req.body.season, req.body.ballType, req.body.bowlingType, req.body.noOfGroups, req.body.startDate, req.body.endDate, req.body.year, req.body.tourUnqId, req.body.subAdName, req.body.subAdId,
     (err, data) => {
       if (err) {
           if (err.kind === "Mobile number already exist") {
@@ -125,3 +125,14 @@ exports.addTournament = (req, res) => {
       }
   });
 };
+
+exports.searchTournament = (req, res) => {
+  AllTournaments.searchTournament(req.body.tournamentName, req.body.tournamentId, (err, data) => {
+    if (err) {
+      response.sendError(req, res, "Please try again");
+    } else{
+      response.sendResponse(req, res, data, "Fetch my tournament successfully");
+    }
+});
+};
+

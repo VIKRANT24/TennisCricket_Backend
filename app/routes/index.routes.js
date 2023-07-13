@@ -10,7 +10,7 @@ module.exports = app => {
   var router = require("express").Router();
 
   // Get User Data Based On User ID
-  router.get("/userMaster/getUser", userMaster.findUserByID);
+  router.post("/userMaster/getUser", userMaster.findUserByID);
   router.post("/userMaster/getUserTournamentID", userMaster.getUserTournamentID);
   router.post("/userMaster/getUserTournament", userMaster.getUserTournament);
   router.post("/userMaster/getUserMainTournament", userMaster.getUserMainTournament);
@@ -19,7 +19,7 @@ module.exports = app => {
   router.post("/userMaster/linkUserWithTournament", userMaster.linkUserWithTournament);
   router.post("/userMaster/fetchMyTournament", userMaster.fetchMyTournament);
   router.post("/userMaster/addTournament", userMaster.addTournament);
-  
+  router.post("/userMaster/searchTournament", userMaster.searchTournament);
 
   //Get Tournament Related Operation(assign user, delete tournament, view tournament)
   router.post("/tournament/deleteTournament", tournament.deleteTournament);
