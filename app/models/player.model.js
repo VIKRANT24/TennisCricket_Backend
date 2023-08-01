@@ -18,7 +18,7 @@ Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, ba
         return;
       }
       else {
-        sql.query("INSERT INTO players (playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,imgpath) VALUES (?,?,?,?,?,?,?,?,?)", [playername, imgdata, playerrole, playermobile, email, batting, bowling, dob, ""], (err, res) => {
+        sql.query("INSERT INTO players (playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,imgpath) VALUES (?,?,?,?,?,?,?,?,?)", [playername, "", playerrole, playermobile, email, batting, bowling, dob, ""], (err, res) => {
           if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -44,7 +44,7 @@ Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, ba
         return;
       }
       else{
-        sql.query("UPDATE players SET ? WHERE playerid =?", [{ playername: playername, imgdata: imgdata, playerrole: playerrole, playermobile: playermobile, email: email, batting: batting, bowling: bowling, dob: dob}, playerid], (err, res) => {
+        sql.query("UPDATE players SET ? WHERE playerid =?", [{ playername: playername, imgdata: "", playerrole: playerrole, playermobile: playermobile, email: email, batting: batting, bowling: bowling, dob: dob}, playerid], (err, res) => {
           if (err) {
             console.log("error: ", err);
             result(err, null);

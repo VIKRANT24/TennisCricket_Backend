@@ -60,7 +60,7 @@ EditTeam.insertTeam = (tourid, teamname, logopath, teamcolor, textcolor, result)
       return;
     }
     else {
-      sql.query("INSERT INTO teams (teamname,tournamentid,logopath,teamcolor,textcolor) VALUES (?,?,?,?,?)", [teamname, tourid, logopath, teamcolor, textcolor], (err, res) => {
+      sql.query("INSERT INTO teams (teamname,tournamentid,logopath,teamcolor,textcolor) VALUES (?,?,?,?,?)", [teamname, tourid, "", teamcolor, textcolor], (err, res) => {
         if (err) {
           console.log("error: ", err);
           result(err, null);
@@ -76,7 +76,7 @@ EditTeam.insertTeam = (tourid, teamname, logopath, teamcolor, textcolor, result)
   });
 };
 EditTeam.updateTeam = (teamid, teamname, logopath, teamcolor, textcolor, result) => {
-  sql.query("UPDATE teams SET ? WHERE teamid =?", [{ teamname: teamname, logopath: logopath, teamcolor: teamcolor, textcolor: textcolor }, teamid], (err, res) => {
+  sql.query("UPDATE teams SET ? WHERE teamid =?", [{ teamname: teamname, logopath: "", teamcolor: teamcolor, textcolor: textcolor }, teamid], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
