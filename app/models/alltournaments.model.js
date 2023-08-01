@@ -104,8 +104,9 @@ AllTournaments.getAllTournaments = (result) => {
 };
 
 AllTournaments.getAllUser = (result) => {
-  sql.query('SELECT T.*, (SELECT TournamentName FROM maintournaments WHERE mainTournamentid = TM.`mainTournamentid`) as TournamentName FROM usermaster as T inner join tournaments as TM on T.cur_tourid = TM.Tournamentid WHERE T.role = ? ORDER BY id DESC ', [2], (err, res) => {
-    if (err) {
+  // sql.query('SELECT T.*, (SELECT TournamentName FROM maintournaments WHERE mainTournamentid = TM.`mainTournamentid`) as TournamentName FROM usermaster as T inner join tournaments as TM on T.cur_tourid = TM.Tournamentid WHERE T.role = ? ORDER BY id DESC ', [2], (err, res) => {
+    sql.query("SELECT * FROM usermaster where user_id !='WQ61fPTlDdao7FMlHdtxqioSRpE3' and role != '3' and userstate != 'Deactive' ORDER BY id DESC", (err, res) => {  
+  if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
