@@ -77,59 +77,32 @@ Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobil
         var tour_season = res[0].current_season;
         var uniqueTournamentId = "CRICONN"+tour_ID+tour_season;
         var tour_year = start_date.toString().split("-")[0]; //2023-08-31
-        sql.query("INSERT INTO  CRICONN_TOURNAMENTS (tour_id, tour_name, tour_unq_id,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	year,	season) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [tour_ID, tour_name, uniqueTournamentId,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	tour_year,	tour_season], (err, res) => {
+        sql.query("UPDATE CRICONN_MAINTOURNAMENT SET current_season = ? WHERE tour_id = ?",[tour_season+1,tour_id], (err, res) => {
           if (err) {
             console.log("error: ", err);
             result(err, null);
             return;
           }
-          else {
-            result(null, res);
-            return;
+          else{
+            sql.query("INSERT INTO  CRICONN_TOURNAMENTS (tour_id, tour_name, tour_unq_id,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	year,	season) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [tour_ID, tour_name, uniqueTournamentId,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	tour_year,	tour_season+1], (err, res) => {
+              if (err) {
+                console.log("error: ", err);
+                result(err, null);
+                return;
+              }
+              else {
+                result(null, res);
+                return;
+              }
+            });
           }
-        });
+        })
       }
       else {
         result({ kind: "not_found" }, null);
       }
     });
   }
-  //   if (err) {
-  //     console.log("error: ", err);
-  //     result(err, null);
-  //     return;
-  //   }
-  //   else {
-  //     var get = { TournamentName: tournament };
-  //     sql.query('SELECT * FROM maintournaments WHERE ? ', get, (err, res) => {
-  //       if (err) {
-  //         console.log("error: ", err);
-  //         result(err, null);
-  //         return;
-  //       }
-  //       else if (res.length) {
-  //         var mainTournamentid = res[0].mainTournamentid;
-  //         var tournamentState = "ongoing";
-  //         var decOne = "Yes";
-  //         var uniqueTournamentId = mainTournamentid+tourUnqId;
-  //         sql.query("INSERT INTO  tournaments (Season,Year,organisername,Type,Place,Ground,TournamentState,tournament_type,Ball_type,Bowling_type,Squad_limit,declare_one,No_of_Groups,mainTournamentid,startdate,enddate,tourUnqId,subAdName,subAdId) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [season, year, organiser, tournamentType, place, ground, tournamentState, tourType, ballType, bowlingType, squadlimit, decOne, noOfGroups, mainTournamentid, startDate, endDate, uniqueTournamentId, subAdName, subAdId], (err, res) => {
-  //           if (err) {
-  //             console.log("error: ", err);
-  //             result(err, null);
-  //             return;
-  //           }
-  //           else {
-  //             result(null, res);
-  //             return;
-  //           }
-  //         });
-  //       }
-  //       else {
-  //         result({ kind: "not_found" }, null);
-  //       }
-  //     });
-  //   }
-  // });
 };
 
 Tournament.fetchMyTournament = (user_id, result) => {
