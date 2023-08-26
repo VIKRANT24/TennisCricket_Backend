@@ -3,7 +3,7 @@ const Rosponse = require("../config/response");
 const response = new Rosponse();
 
 exports.addSubAdmin = (req, res) => {
-    SubAdmin.addSubAdmin(req.body.user_id, req.body.username, req.body.password, req.body.permissions, req.body.addedBy, req.body.full_name, req.body.mobile_no, (err, data) => {
+    SubAdmin.addSubAdmin(req.body.user_id, req.body.username, req.body.password, req.body.permissions, req.body.addedBy, req.body.full_name, req.body.mobile_no, req.body.filename, (err, data) => {
       if (err) {
         if (err.kind === "User already exist") {
             response.sendNoData(req, res, "Sub Admin already exist");
