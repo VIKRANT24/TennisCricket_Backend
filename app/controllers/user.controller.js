@@ -3,7 +3,7 @@ const Rosponse = require("../config/response");
 const response = new Rosponse();
 
 exports.addUser = (req, res) => {
-    User.addUser(req.body.user_id, req.body.username, req.body.password, req.body.addedBy, (err, data) => {
+    User.addUser(req.body.user_id, req.body.username, req.body.password, req.body.addedBy, req.body.full_name, req.body.mobile_no, (err, data) => {
       if (err) {
         if (err.kind === "User already exist") {
             response.sendNoData(req, res, "User already exist");

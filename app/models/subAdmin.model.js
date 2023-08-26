@@ -4,7 +4,7 @@ const sql = require("./db.js");
 const SubAdmin = function() {
 };
 
-SubAdmin.addSubAdmin = (user_id, username, password, permissions, result) => {
+SubAdmin.addSubAdmin = (user_id, username, password, permissions, addedBy, full_name, mobile_no, result) => {
     var get = {user_id: user_id};
     sql.query('SELECT * FROM usermaster WHERE ? ', get, (err, res) => {
       if (err) {
@@ -17,7 +17,7 @@ SubAdmin.addSubAdmin = (user_id, username, password, permissions, result) => {
         return;
       }
       else{
-        sql.query("INSERT INTO usermaster (user_id,username,password,userstate,cur_tourid,role,permissions) VALUES (?,?,?,?,?,?,?)", [user_id,username,password,'Active','-',3,permissions],(err, res) => {
+        sql.query("INSERT INTO usermaster (user_id,username,password,userstate,cur_tourid,role,permissions,add_user_by,mobile_no,full_name) VALUES (?,?,?,?,?,?,?,?,?,?)", [user_id,username,password,'Active','-',3,permissions,addedBy,mobile_no,full_name],(err, res) => {
             if (err) {
                 console.log("error: ", err);
                 result(err, null);
