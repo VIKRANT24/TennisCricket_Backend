@@ -8,7 +8,7 @@ let storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     console.log(file);
-    cb(null, req.query.filename+"png");
+    cb(null, req.query.filename);
   },
 });
 
