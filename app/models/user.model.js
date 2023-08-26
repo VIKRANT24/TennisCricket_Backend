@@ -4,7 +4,7 @@ const sql = require("./db.js");
 const User = function() {
 };
 
-User.addUser = (user_id, username, password, addedBy, result) => {
+User.addUser = (user_id, username, password, addedBy, full_name, mobile_no, result) => {
     var get = {user_id: user_id};
     sql.query('SELECT * FROM usermaster WHERE ? ', get, (err, res) => {
       if (err) {
@@ -18,7 +18,7 @@ User.addUser = (user_id, username, password, addedBy, result) => {
       }
       else{
         var permissions = 'mytournaments,resetpassword,viewmatches,editmatch,editteam,managevideo,creatematch,viewscorecard';
-        sql.query("INSERT INTO usermaster (user_id,username,password,userstate,cur_tourid,role,permissions,add_user_by) VALUES (?,?,?,?,?,?,?)", [user_id,username,password,'Active','-',2,permissions,addedBy],(err, res) => {
+        sql.query("INSERT INTO usermaster (user_id,username,password,userstate,cur_tourid,role,permissions,add_user_by,mobile_no,full_name) VALUES (?,?,?,?,?,?,?,?,?)", [user_id,username,password,'Active','-',2,permissions,addedBy,mobile_no,full_name],(err, res) => {
             if (err) {
                 console.log("error: ", err);
                 result(err, null);

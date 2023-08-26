@@ -131,4 +131,23 @@ Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobil
   //   }
   // });
 };
+
+Tournament.fetchMyTournament = (user_id, result) => {
+  var get = {creator_id: user_id };
+  sql.query('SELECT * FROM CRICONN_TOURNAMENTS WHERE ? ', get, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    else if (res.length) {
+      result(null, res);
+      return;
+    }
+    else {
+      result({ kind: "not_found" }, null);
+    }
+  });
+};
+
 module.exports = Tournament;

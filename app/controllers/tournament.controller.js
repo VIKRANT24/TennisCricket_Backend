@@ -31,3 +31,13 @@ exports.addNewTournament = (req, res) => {
       }
   });
 };
+
+exports.fetchMyTournament = (req, res) => {
+  Tournament.fetchMyTournament(req.body.user_id, (err, data) => {
+    if (err) {
+      response.sendError(req, res, "Please try again");
+    } else{
+      response.sendResponse(req, res, data, "Fetch my tournament successfully");
+    }
+});
+};
