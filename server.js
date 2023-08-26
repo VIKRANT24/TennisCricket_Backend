@@ -7,7 +7,7 @@ const app = express();
 var corsOptions = {
   origin: "*"
 };
-
+global.__basedir = __dirname;
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json

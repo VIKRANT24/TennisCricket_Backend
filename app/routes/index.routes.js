@@ -7,6 +7,8 @@ module.exports = app => {
   const editMatch = require("../controllers/editMatch.controller");
   const editTeam = require("../controllers/editTeam.controller");
   const statistics = require("../controllers/matchStatistic.controller");
+  const common = require("../controllers/common.controller");
+  const fileUpload = require("../controllers/fileUpload.controller");
   var router = require("express").Router();
 
   // Get User Data Based On User ID
@@ -23,6 +25,7 @@ module.exports = app => {
 
   //Get Tournament Related Operation(assign user, delete tournament, view tournament)
   router.post("/tournament/deleteTournament", tournament.deleteTournament);
+  router.post("/tournament/addNewTournament", tournament.addNewTournament);
 
   //User Related Operation(add user, view user, reset password)
   router.post("/user/addUser", user.addUser);
@@ -60,5 +63,12 @@ module.exports = app => {
   router.post("/statistics/getTournamentPartnership", statistics.fetchTournamentPartnership);
   router.post("/statistics/getFastestFiftyHundred", statistics.fetchFastestFiftyHundred);
   
+  //ground related operation
+  router.post("/ground/addGround", common.addGround);
+  router.get("/ground/fetchGround", common.fetchGround);
+
+  // upload and fetch images
+  router.post("/images/uploadImage", fileUpload.upload);
+
   app.use('/api', router);
 };
