@@ -30,3 +30,59 @@ exports.fetchGround = (req, res) => {
       }
   });
 };
+
+exports.addCommentator = (req, res) => {
+  Common.addCommentator(req.body.coment_name, req.body.coment_mobile, req.body.coment_location, req.body.coment_image, (err, data) => {
+    if (err) {
+        if (err.kind === "Commentator already exist") {
+            response.sendNoData(req, res, "Commentator already exist");
+        } else {
+            response.sendError(req, res, "Please try again");
+        }
+    } else {
+        response.sendResponse(req, res, data, "Commentator has been added successfully");
+    }
+});
+};
+
+exports.fetchCommentator = (req, res) => {
+  Common.fetchCommentator((err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+          response.sendNoData(req, res, "No Record Found");
+      } else {
+          response.sendError(req, res, "Please try again");
+      }
+    } else{
+      response.sendResponse(req, res, data, "Commentator list has been fetched successfully.");
+    }
+});
+};
+
+exports.addUmpires = (req, res) => {
+  Common.addUmpires(req.body.umpire_name, req.body.umpire_mobile, req.body.umpire_location, req.body.umpire_image, (err, data) => {
+    if (err) {
+        if (err.kind === "Umpire already exist") {
+            response.sendNoData(req, res, "Umpire already exist");
+        } else {
+            response.sendError(req, res, "Please try again");
+        }
+    } else {
+        response.sendResponse(req, res, data, "Umpire has been added successfully");
+    }
+});
+};
+
+exports.fetchUmpires = (req, res) => {
+  Common.fetchUmpires((err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+          response.sendNoData(req, res, "No Record Found");
+      } else {
+          response.sendError(req, res, "Please try again");
+      }
+    } else{
+      response.sendResponse(req, res, data, "Umpire list has been fetched successfully.");
+    }
+});
+};

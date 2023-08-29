@@ -47,7 +47,7 @@ module.exports = app => {
   //Edit Match Related Operation
   router.post("/editMatch/fetchAllMatchDetails", editMatch.fetchAllMatchDetails);
   router.post("/editMatch/insertMatch", editMatch.insertMatch);
-  
+
   //Edit Team Related Operation
   router.post("/editTeam/fetchTournamentPlayers", editTeam.fetchTournamentPlayers);
   router.post("/editTeam/getTournamentTeam", editTeam.getTournamentTeam);
@@ -64,10 +64,18 @@ module.exports = app => {
   router.post("/statistics/getTournamentBolwing", statistics.fetchTournamentBolwing);
   router.post("/statistics/getTournamentPartnership", statistics.fetchTournamentPartnership);
   router.post("/statistics/getFastestFiftyHundred", statistics.fetchFastestFiftyHundred);
-  
+
   //ground related operation
   router.post("/ground/addGround", common.addGround);
   router.get("/ground/fetchGround", common.fetchGround);
+
+  //commentator related operation
+  router.post("/commentator/addCommentator", common.addCommentator);
+  router.get("/commentator/fetchCommentator", common.fetchCommentator);
+
+  //umpire related operation
+  router.post("/umpire/addUmpires", common.addUmpires);
+  router.get("/umpire/fetchUmpires", common.fetchUmpires);
 
   // upload and fetch images
   router.post("/images/uploadImage", fileUpload.upload);
