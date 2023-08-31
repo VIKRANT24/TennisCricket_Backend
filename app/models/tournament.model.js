@@ -19,7 +19,7 @@ Tournament.deleteTournament = (tourid, result) => {
   });
 };
 
-Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date, result) => {
+Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date, umpire_ids, commentator_ids, result) => {
   if (tour_id == 0 || tour_id == "" || tour_id == undefined || tour_id == null) {
     sql.query("INSERT INTO CRICONN_MAINTOURNAMENT (tour_name,current_season) VALUES (?,?)", [tour_name, current_season], (err, res) => {
       if (err) {
@@ -42,7 +42,7 @@ Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobil
               var tour_season = res[0].current_season;
               var uniqueTournamentId = "CRICONN"+tour_ID+tour_season;
               var tour_year = start_date.toString().split("-")[0]; //2023-08-31
-              sql.query("INSERT INTO  CRICONN_TOURNAMENTS (tour_id, tour_name, tour_unq_id,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	year,	season) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [tour_ID, tour_name, uniqueTournamentId,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	tour_year,	tour_season], (err, res) => {
+              sql.query("INSERT INTO  CRICONN_TOURNAMENTS (tour_id, tour_name, tour_unq_id,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	year,	season, commentator_ids, umpire_ids) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [tour_ID, tour_name, uniqueTournamentId,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	tour_year,	tour_season, commentator_ids, umpire_ids], (err, res) => {
                 if (err) {
                   console.log("error: ", err);
                   result(err, null);
@@ -84,7 +84,7 @@ Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobil
             return;
           }
           else{
-            sql.query("INSERT INTO  CRICONN_TOURNAMENTS (tour_id, tour_name, tour_unq_id,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	year,	season) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [tour_ID, tour_name, uniqueTournamentId,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	tour_year,	tour_season+1], (err, res) => {
+            sql.query("INSERT INTO  CRICONN_TOURNAMENTS (tour_id, tour_name, tour_unq_id,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	year,	season, commentator_ids, umpire_ids) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [tour_ID, tour_name, uniqueTournamentId,	creator_mobile,	creator_id,	tour_banner,	tour_logo,	squad_limit,	place,	ground_id,	tour_type,	tour_category,	pitch_type,	ball_type,	start_date,	end_date,	tour_year,	tour_season+1, commentator_ids, umpire_ids], (err, res) => {
               if (err) {
                 console.log("error: ", err);
                 result(err, null);

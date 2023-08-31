@@ -18,8 +18,8 @@ exports.deleteTournament = (req, res) => {
 
 exports.addNewTournament = (req, res) => {
   Tournament.addNewTournament(req.body.tour_id, req.body.tour_name, req.body.current_season, req.body.creator_mobile,	req.body.creator_id,	req.body.tour_banner,req.body.tour_logo,
-  req.body.squad_limit,	req.body.place,	req.body.ground_id,	req.body.tour_type,	req.body.tour_category,	req.body.pitch_type,	req.body.ball_type,	req.body.start_date,	req.body.end_date,
-    (err, data) => {
+  req.body.squad_limit,	req.body.place,	req.body.ground_id,	req.body.tour_type,	req.body.tour_category,	req.body.pitch_type,	req.body.ball_type,	req.body.start_date,
+  req.body.end_date, req.body.umpire_ids, req.body.commentator_ids, (err, data) => {
       if (err) {
           if (err.kind === "Mobile number already exist") {
               response.sendNoData(req, res, "Mobile number already exist");
