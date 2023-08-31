@@ -77,7 +77,7 @@ module.exports = app => {
   router.post("/umpire/addUmpires", common.addUmpires);
   router.get("/umpire/fetchUmpires", common.fetchUmpires);
 
-  // upload and fetch images
+  // upload and fetch image
   router.post("/images/uploadImage", fileUpload.upload);
 
   app.use('/api', router);
