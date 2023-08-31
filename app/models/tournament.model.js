@@ -114,6 +114,7 @@ Tournament.fetchMyTournament = (user_id, result) => {
       return;
     }
     else if (res.length) {
+      setMatchOfficialsHistory(1,"1,2,3,4,5","1,2,3,4,5")
       result(null, res);
       return;
     }
@@ -123,4 +124,13 @@ Tournament.fetchMyTournament = (user_id, result) => {
   });
 };
 
+async function setMatchOfficialsHistory(tour_id, umpire_ids, commentator_ids){
+  var umpireData=umpire_ids.split(",");
+  var umpireValue=[]
+  for(let i=0;i<umpireData.length;i++){
+      umpireValue.push([tour_id,umpireData[i]])
+  }
+  sql.query("INSERT INTO  CRICONN_UMPIRE_HISTORY (tour_id, umpire_id) values (?)", [umpireValue], (err, res) => {})
+  // sql.query("INSERT INTO  CRICONN_UMPIRE_HISTORY (tour_id, commentator_ids) values (?,?)", [tour_ID,	commentator_ids], (err, res) => {})
+}
 module.exports = Tournament;
