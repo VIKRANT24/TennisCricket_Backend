@@ -143,7 +143,7 @@ async function setUmpireHistory(tour_id, umpire_ids){
 async function setCommentatorHistory(tour_id, commentator_ids){
   var commentatorData=commentator_ids.split(",");
   for(let i=0;i<commentatorData.length;i++){
-    sql.query("INSERT INTO  CRICONN_COMMENTATOR_HISTORY (tour_id, commentator_ids) values (?,?)", [tour_id,commentatorData[i]], (err, res) => {
+    sql.query("INSERT INTO  CRICONN_COMMENTATOR_HISTORY (tour_id, commentator_id) values (?,?)", [tour_id,commentatorData[i]], (err, res) => {
       if(err){
         console.log(err);
       }else{
