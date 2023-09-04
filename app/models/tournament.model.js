@@ -49,6 +49,8 @@ Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobil
                   return;
                 }
                 else {
+                  setUmpireHistory(tour_ID,umpire_ids);
+                  setCommentatorHistory(tour_ID,commentator_ids);
                   result(null, res);
                   return;
                 }
@@ -91,6 +93,8 @@ Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobil
                 return;
               }
               else {
+                setUmpireHistory(tour_ID,umpire_ids);
+                setCommentatorHistory(tour_ID,commentator_ids);
                 result(null, res);
                 return;
               }
@@ -114,7 +118,6 @@ Tournament.fetchMyTournament = (user_id, result) => {
       return;
     }
     else if (res.length) {
-      setMatchOfficialsHistory(1,"1,2,3,4,5","1,2,3,4,5")
       result(null, res);
       return;
     }
@@ -124,13 +127,29 @@ Tournament.fetchMyTournament = (user_id, result) => {
   });
 };
 
-async function setMatchOfficialsHistory(tour_id, umpire_ids, commentator_ids){
+async function setUmpireHistory(tour_id, umpire_ids){
   var umpireData=umpire_ids.split(",");
-  var umpireValue=[]
   for(let i=0;i<umpireData.length;i++){
-      umpireValue.push([tour_id,umpireData[i]])
+    sql.query("INSERT INTO  CRICONN_UMPIRE_HISTORY (tour_id, umpire_id) values (?,?)", [tour_id,umpireData[i]], (err, res) => {
+      if(err){
+        console.log(err);
+      }else{
+        console.log("Umpire history added");
+      }
+    })
   }
-  sql.query("INSERT INTO  CRICONN_UMPIRE_HISTORY (tour_id, umpire_id) values (?)", [umpireValue], (err, res) => {})
-  // sql.query("INSERT INTO  CRICONN_UMPIRE_HISTORY (tour_id, commentator_ids) values (?,?)", [tour_ID,	commentator_ids], (err, res) => {})
+}
+
+async function setCommentatorHistory(tour_id, commentator_ids){
+  var commentatorData=commentator_ids.split(",");
+  for(let i=0;i<commentatorData.length;i++){
+    sql.query("INSERT INTO  CRICONN_COMMENTATOR_HISTORY (tour_id, commentator_ids) values (?,?)", [tour_id,commentatorData[i]], (err, res) => {
+      if(err){
+        console.log(err);
+      }else{
+        console.log("Umpire history added");
+      }
+    })
+}
 }
 module.exports = Tournament;

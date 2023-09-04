@@ -146,7 +146,6 @@ Common.fetchUmpires = (result) => {
       return;
     }
     if (res.length) {
-      trytest();
       result(null, res);
       return;
     }
@@ -154,9 +153,4 @@ Common.fetchUmpires = (result) => {
   });
 };
 
-async function trytest(){
-  setTimeout(function(){
-    console.log("sdgsdghdghfjfjhffd")
-  }, 10000);
-}
 module.exports = Common;
