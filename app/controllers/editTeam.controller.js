@@ -28,6 +28,32 @@ exports.getTournamentTeam = (req, res) => {
     }
   });
 };
+exports.getUserTeams = (req, res) => {
+  EditTeam.getUserTeams(req.body.user_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        response.sendNoData(req, res, "No Record Found");
+      } else {
+        response.sendError(req, res, "Please try again");
+      }
+    } else {
+      response.sendResponse(req, res, data, "Team Fetch Successfully");
+    }
+  });
+};
+exports.searchTeams = (req, res) => {
+  EditTeam.searchTeams(req.body.team_name, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        response.sendNoData(req, res, "No Record Found");
+      } else {
+        response.sendError(req, res, "Please try again");
+      }
+    } else {
+      response.sendResponse(req, res, data, "Team Fetch Successfully");
+    }
+  });
+};
 exports.getTournamentTeamSquad = (req, res) => {
   EditTeam.getTournamentTeamSquad(req.body.tourid, req.body.teamid, (err, data) => {
     if (err) {
@@ -42,7 +68,7 @@ exports.getTournamentTeamSquad = (req, res) => {
   });
 };
 exports.insertTeam = (req, res) => {
-  EditTeam.insertTeam(req.body.tourid, req.body.teamname, req.body.logopath, req.body.teamcolor, req.body.textcolor, (err, teamid) => {
+  EditTeam.insertTeam(req.body.team_name, req.body.team_place, req.body.team_logo, req.body.tour_id, req.body.user_id, (err, teamid) => {
     if (err) {
       if (err.kind === "Team already exist") {
         response.sendNoData(req, res, "Team already exist");

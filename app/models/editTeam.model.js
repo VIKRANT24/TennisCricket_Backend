@@ -20,7 +20,37 @@ EditTeam.fetchTournamentPlayers = (tourid, result) => {
   });
 };
 EditTeam.getTournamentTeam = (tourid, result) => {
-  sql.query(`SELECT * FROM teams where tournamentid=${tourid}`, function (err, results) {
+  sql.query(`SELECT * FROM CRICONN_TEAMS where tour_id=${tourid}`, function (err, results) {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    if (results.length) {
+      result(null, results);
+      return;
+    }
+    result({ kind: "not_found" }, null);
+  });
+};
+EditTeam.getUserTeams = (user_id, result) => {
+  var get={user_id : user_id}
+  sql.query("SELECT * FROM CRICONN_TEAMS where ?",[get], function (err, results) {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    if (results.length) {
+      result(null, results);
+      return;
+    }
+    result({ kind: "not_found" }, null);
+  });
+};
+EditTeam.searchTeams = (team_name, result) => {
+  console.log()
+  sql.query("SELECT * FROM CRICONN_TEAMS where team_name LIKE ?",['%'+team_name+'%'], function (err, results) {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -47,9 +77,9 @@ EditTeam.getTournamentTeamSquad = (tourid, teamid, result) => {
     result({ kind: "not_found" }, null);
   });
 };
-EditTeam.insertTeam = (tourid, teamname, logopath, teamcolor, textcolor, result) => {
-  var get = { teamname: teamname };
-  sql.query('SELECT * FROM teams WHERE ? ', get, (err, res) => {
+EditTeam.insertTeam = (team_name, team_place, team_logo, tour_id, user_id,result) => {
+  var get = { team_name: team_name };
+  sql.query('SELECT * FROM CRICONN_TEAMS WHERE ? ', get, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -60,14 +90,13 @@ EditTeam.insertTeam = (tourid, teamname, logopath, teamcolor, textcolor, result)
       return;
     }
     else {
-      sql.query("INSERT INTO teams (teamname,tournamentid,logopath,teamcolor,textcolor) VALUES (?,?,?,?,?)", [teamname, tourid, "", teamcolor, textcolor], (err, res) => {
+      sql.query("INSERT INTO CRICONN_TEAMS(team_name,team_place,team_logo,tour_id,user_id) VALUES (?,?,?,?,?)", [team_name,team_place,team_logo,tour_id,user_id], (err, res) => {
         if (err) {
           console.log("error: ", err);
           result(err, null);
           return;
         }
         else {
-          console.log(result.insertId);
           result(null, res.insertId);
           return;
         }
