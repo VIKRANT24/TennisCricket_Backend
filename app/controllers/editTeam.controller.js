@@ -27,11 +27,12 @@ exports.getTournamentTeam = (req, res) => {
       if (data.length) {
         let teamIDArr = data.map(a => a.team_id)
         console.log(teamIDArr);
-        EditTeam.getTeamsPlayer(teamIDArr, (err, data1) => {
+        EditTeam.getTeamsPlayer(teamIDArr,1, (err, data1) => {
           for(let i=0;i<data.length;i++){
             var playerData=[];
             for(let j=0;j<data1.length;j++){
-              if(data[i].team_id==data1[j].team_id){
+              var index = playerData.findIndex(object => object.player_id === data1[j].player_id);
+              if(data[i].team_id==data1[j].team_id && index === -1){
                 playerData.push(data1[j]);
               }
             }
@@ -53,7 +54,26 @@ exports.getUserTeams = (req, res) => {
         response.sendError(req, res, "Please try again");
       }
     } else {
-      response.sendResponse(req, res, data, "Team Fetch Successfully");
+      let teamIDArr = data.map(a => a.team_id)
+      console.log(teamIDArr);
+      EditTeam.getTeamsPlayer(teamIDArr,1, (err, data1) => {
+        for(let i=0;i<data.length;i++){
+          var playerData=[];
+          if(data1!=null && data1 != undefined){
+          for(let j=0;j<data1.length;j++){
+            var index = playerData.findIndex(object => object.player_id === data1[j].player_id);
+            if(data[i].team_id==data1[j].team_id && index === -1){
+              playerData.push(data1[j]);
+            }
+          }
+          data[i].playerData = playerData;
+        }else{
+          data[i].playerData = [];
+        }
+        }
+        console.log(data);
+        response.sendResponse(req, res, data, "Team Fetch Successfully");
+      })
     }
   });
 };
@@ -66,7 +86,26 @@ exports.searchTeams = (req, res) => {
         response.sendError(req, res, "Please try again");
       }
     } else {
-      response.sendResponse(req, res, data, "Team Fetch Successfully");
+      let teamIDArr = data.map(a => a.team_id)
+      console.log(teamIDArr);
+      EditTeam.getTeamsPlayer(teamIDArr,1, (err, data1) => {
+        for(let i=0;i<data.length;i++){
+          var playerData=[];
+          if(data1!=null && data1 != undefined){
+          for(let j=0;j<data1.length;j++){
+            var index = playerData.findIndex(object => object.player_id === data1[j].player_id);
+            if(data[i].team_id==data1[j].team_id && index === -1){
+              playerData.push(data1[j]);
+            }
+          }
+          data[i].playerData = playerData;
+        }else{
+          data[i].playerData = [];
+        }
+        }
+        console.log(data);
+        response.sendResponse(req, res, data, "Team Fetch Successfully");
+      })
     }
   });
 };
@@ -160,3 +199,18 @@ exports.updateSquadPlayer = (req, res) => {
     }
   });
 };
+exports.getTeamsPlayer = (req, res) => {
+EditTeam.getTeamsPlayer(req.body.teamid,0, (err, data) => {
+  if (err) {
+    if (err.kind === "not_found") {
+      response.sendNoData(req, res, "No Record Found");
+    } else {
+      response.sendError(req, res, "Please try again");
+    }
+  } else {
+    const key = 'player_id';
+    var uniquePlayerList = [...new Map(data.map(item =>[item[key], item])).values()];
+    response.sendResponse(req, res, uniquePlayerList, "Team Player Fetch Successfully");
+  }
+})
+}

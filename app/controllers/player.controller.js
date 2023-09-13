@@ -3,7 +3,7 @@ const Rosponse = require("../config/response");
 const response = new Rosponse();
 
 exports.addPlayer = (req, res) => {
-    User.addEditPlayer(req.body.player_name, req.body.player_mobile, req.body.player_logo, req.body.player_place, req.body.player_email, req.body.player_dob, "add", (err, data) => {
+    User.addEditPlayer(req.body.player_name, req.body.player_mobile, req.body.player_logo, req.body.player_place, req.body.player_email, req.body.player_dob, req.body.tour_id, req.body.team_id, req.body.is_selected, "add", (err, data) => {
         if (err) {
             if (err.kind === "Mobile number already exist") {
                 response.sendNoData(req, res, "Mobile number already exist");
@@ -28,8 +28,8 @@ exports.editPlayer = (req, res) => {
         }
     });
 };
-exports.fetchPlayerList = (req, res) => {
-    User.fetchPlayerList(req.body.playername, (err, data) => {
+exports.searchPlayers = (req, res) => {
+    User.searchPlayers(req.body.search_text, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
             response.sendNoData(req, res, "No Record Found");
@@ -38,6 +38,19 @@ exports.fetchPlayerList = (req, res) => {
         }
       } else{
         response.sendResponse(req, res, data, "Player list has been fetched successfully.");
+      }
+  });
+};
+exports.fetchPlayerTeams = (req, res) => {
+    User.fetchPlayerTeams(req.body.player_id, (err, data) => {
+      if (err) {
+        if (err.kind === "not_found") {
+            response.sendNoData(req, res, "No Record Found");
+        } else {
+            response.sendError(req, res, "Please try again");
+        }
+      } else{
+        response.sendResponse(req, res, data, "Teams has been fetched successfully.");
       }
   });
 };
