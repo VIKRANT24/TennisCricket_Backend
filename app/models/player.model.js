@@ -4,10 +4,11 @@ const sql = require("./db.js");
 const Player = function () {
 };
 
-Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, batting, bowling, dob, playerid, tag, country, state, city, result) => {
-  var get = { playermobile: playermobile };
+
+Player.addEditPlayer = (player_name,	player_mobile,	player_logo,	player_place, player_email, player_dob, tag, result) => {
+  var get = { player_mobile: player_mobile };
   if (tag == "add") {
-    sql.query('SELECT * FROM players WHERE ? ', get, (err, res) => {
+    sql.query('SELECT * FROM CRICONN_PLAYERS WHERE ? ', get, (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -18,15 +19,31 @@ Player.addEditPlayer = (playername, imgdata, playerrole, playermobile, email, ba
         return;
       }
       else {
-        sql.query("INSERT INTO players (playername,imgdata,playerrole,playermobile,email,batting,bowling,dob,imgpath,city,state,country) VALUES (?,?,?,?,?,?,?,?,?)", [playername, "", playerrole, playermobile, email, batting, bowling, dob, "", city, state, country], (err, res) => {
-          if (err) {
-            console.log("error: ", err);
-            result(err, null);
+        sql.query("INSERT INTO CRICONN_PLAYERS (player_name,	player_mobile,	player_logo,	player_place, player_email, player_dob) VALUES (?,?,?,?,?,?)", [player_name,	player_mobile,	player_logo,	player_place, player_email, player_dob], (err1, res1) => {
+          if (err1) {
+            console.log("error: ", err1);
+            result(err1, null);
             return;
           }
-          else {
-            result(null, res.insertId);
+          else {   
+            if(res1.insertId!=null && res1.insertId!=undefined && res1.insertId!=0){
+            var playerID = res1.insertId 
+            var playerUnqID = player_name+res1.insertId
+            sql.query("UPDATE CRICONN_PLAYERS SET ? WHERE player_id =?", [{ player_unqid: playerUnqID }, playerID], (err2, res2) => {
+              if (err2) {
+                console.log("error: ", err2);
+                result(err2, null);
+                return;
+              }
+              else {
+                result(null, []);
+                return;
+              }
+            });
+          }else{
+            result("please try after sometime", null);
             return;
+          }
           }
         });
       }

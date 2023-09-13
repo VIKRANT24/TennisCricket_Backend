@@ -20,19 +20,35 @@ EditTeam.fetchTournamentPlayers = (tourid, result) => {
   });
 };
 EditTeam.getTournamentTeam = (tourid, result) => {
-  sql.query(`SELECT * FROM CRICONN_TEAMS where tour_id=${tourid}`, function (err, results) {
+  sql.query(`SELECT * FROM CRICONN_TEAMS where tour_id=${tourid}`, function (err, res) {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
-    if (results.length) {
-      result(null, results);
+    if (res.length) {
+      result(null, res);
+      return;
+    }
+    result({ kind: "not_found" }, null);
+    })
+};
+
+EditTeam.getTeamsPlayer = (teamIDArr, result) => {
+  sql.query("SELECT tp.player_id,tp.player_name,tpd.team_id FROM CRICONN_PLAYERS as tp RIGHT  JOIN CRICONN_PLAYER_DETAILS as tpd on tp.player_id = tpd.player_id where tpd.team_id IN (?)",[teamIDArr], function (err, res) {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    if (res.length) {
+      result(null, res);
       return;
     }
     result({ kind: "not_found" }, null);
   });
 };
+
 EditTeam.getUserTeams = (user_id, result) => {
   var get={user_id : user_id}
   sql.query("SELECT * FROM CRICONN_TEAMS where ?",[get], function (err, results) {

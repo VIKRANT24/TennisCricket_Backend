@@ -24,7 +24,23 @@ exports.getTournamentTeam = (req, res) => {
         response.sendError(req, res, "Please try again");
       }
     } else {
-      response.sendResponse(req, res, data, "Team Fetch Successfully");
+      if (data.length) {
+        let teamIDArr = data.map(a => a.team_id)
+        console.log(teamIDArr);
+        EditTeam.getTeamsPlayer(teamIDArr, (err, data1) => {
+          for(let i=0;i<data.length;i++){
+            var playerData=[];
+            for(let j=0;j<data1.length;j++){
+              if(data[i].team_id==data1[j].team_id){
+                playerData.push(data1[j]);
+              }
+            }
+            data[i].playerData = playerData;
+          }
+          console.log(data);
+          response.sendResponse(req, res, data, "Team Fetch Successfully");
+        })
+      }
     }
   });
 };
@@ -125,7 +141,7 @@ exports.addPlayerToSquad = (req, res) => {
 exports.removePlayerFromSquad = (req, res) => {
   EditTeam.removePlayerFromSquad(req.body.tourid, req.body.teamid, req.body.playerid, (err, data) => {
     if (err) {
-        response.sendError(req, res, "Please try again");
+      response.sendError(req, res, "Please try again");
     } else {
       response.sendResponse(req, res, data, "Player has been deleted successfully");
     }
@@ -134,12 +150,12 @@ exports.removePlayerFromSquad = (req, res) => {
 exports.updateSquadPlayer = (req, res) => {
   EditTeam.updateSquadPlayer(req.body.tourid, req.body.teamid, req.body.playerid, req.body.playing11, (err, data) => {
     if (err) {
-        response.sendError(req, res, "Please try again");
+      response.sendError(req, res, "Please try again");
     } else {
-      if(req.body.playing11=="yes"){
-      response.sendResponse(req, res, data, "Player has been added successfully");
-      }else{
-        response.sendResponse(req, res, data, "Player has been removed successfully");  
+      if (req.body.playing11 == "yes") {
+        response.sendResponse(req, res, data, "Player has been added successfully");
+      } else {
+        response.sendResponse(req, res, data, "Player has been removed successfully");
       }
     }
   });
