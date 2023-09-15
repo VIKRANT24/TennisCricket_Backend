@@ -47,7 +47,7 @@ module.exports = app => {
 
   //Edit Match Related Operation
   router.post("/editMatch/fetchAllMatchDetails", editMatch.fetchAllMatchDetails);
-  router.post("/editMatch/insertMatch", editMatch.insertMatch);
+  router.post("/editMatch/scheduleMatch", editMatch.scheduleMatch);
 
   //Edit Team Related Operation
   router.post("/editTeam/fetchTournamentPlayers", editTeam.fetchTournamentPlayers);

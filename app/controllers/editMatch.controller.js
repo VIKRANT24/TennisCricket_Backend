@@ -15,8 +15,10 @@ exports.fetchAllMatchDetails = (req, res) => {
       }
   });
 };
-exports.insertMatch = (req, res) => {
-  EditMatch.insertMatch(req.body.matchkey, req.body.team1, req.body.team2, req.body.format, req.body.status, req.body.start_date, req.body.overs, req.body.match_state, req.body.tournament_id, (err, data) => {
+exports.scheduleMatch = (req, res) => {
+  EditMatch.scheduleMatch(req.body.tour_id, req.body.team_one, req.body.team_two, req.body.team1_players, req.body.team2_players, req.body.match_type,
+  req.body.no_of_overs, req.body.place, req.body.ground_id, req.body.date_time, req.body.ball_type, req.body.pitch_type,req.body.umpire1_id, req.body.umpire2_id,
+  req.body.umpire3_id, req.body.commentator_id, req.body.bowler_max_ovr, req.body.power_play,req.body.scorer_id, req.body.match_status, req.body.added_by, (err, data) => {
     if (err) {
       if (err.kind === "This match is already present") {
         response.sendNoData(req, res, "This match is already present");
