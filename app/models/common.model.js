@@ -153,4 +153,75 @@ Common.fetchUmpires = (result) => {
   });
 };
 
+Common.fetchTourOfficials = (tour_id,result) => {
+  var umpireData =[];
+  var groundData =[];
+  var commentatorData =[];
+  sql.query("SELECT * FROM CRICONN_TOURNAMENTS WHERE tour_id= ?",[tour_id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    if (res.length) {
+      var umpireId = res[0].umpire_ids;
+      var umpireIdArr = [];
+      var groundId = res[0].ground_id;
+      var groundIdArr = [];
+      var commentatorId	 = res[0].commentator_ids	;
+      var commentatorIdArr = [];
+      if(umpireId==null || umpireId==undefined || umpireId==""){
+        umpireIdArr = [];
+      }else{
+        umpireIdArr = umpireId.split(",");
+      }
+      sql.query("SELECT * FROM CRICONN_UMPIRE WHERE umpire_id in (?)",[umpireIdArr], (umpireErr, umpireRes) => {
+        if (umpireErr) {
+          umpireData=[];
+        }
+        if (umpireRes.length) {
+          umpireData=umpireRes;
+        }else{
+          umpireData=[];
+        }
+        if(groundId==null || groundId==undefined || groundId==""){
+          groundIdArr=[];
+        }else{
+          groundIdArr = groundId.split(",");
+        }
+        sql.query("SELECT * FROM CRICONN_GROUNDS WHERE ground_id in (?)",[groundIdArr], (groundErr, groundRes) => {
+          if (groundErr) {
+            groundData =[];
+          }
+          if (groundRes.length) {
+            groundData =groundRes;
+          }else{
+            groundData =[];
+          }
+          if(commentatorId==null || commentatorId==undefined || commentatorId==""){
+            commentatorIdArr=[];
+          }else{
+            commentatorIdArr = commentatorId.split(",");
+          }
+          sql.query("SELECT * FROM CRICONN_COMMENTATOR WHERE 	coment_id in (?)",[commentatorIdArr], (commentErr, commentRes) => {
+            if (commentErr) {
+              commentatorData =[];
+            }
+            if (commentRes.length) {
+              commentatorData =commentRes;
+            }else{
+              commentatorData =[];
+            }
+            var data={"umpireData":umpireData,"groundData":groundData,"commentatorData":commentatorData}
+            result(null, data);
+            return;       
+          });       
+        });       
+      });
+    }else{
+      result({ kind: "not_found" }, null);
+    }
+  });
+};
+
 module.exports = Common;

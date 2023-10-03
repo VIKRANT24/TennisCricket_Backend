@@ -80,6 +80,7 @@ module.exports = app => {
   //umpire related operation
   router.post("/umpire/addUmpires", common.addUmpires);
   router.get("/umpire/fetchUmpires", common.fetchUmpires);
+  router.post("/officials/fetchOfficials", common.fetchOfficials);
 
   // upload and fetch image
   router.post("/images/uploadImage", fileUpload.upload);

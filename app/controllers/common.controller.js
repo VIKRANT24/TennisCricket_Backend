@@ -86,3 +86,17 @@ exports.fetchUmpires = (req, res) => {
     }
 });
 };
+
+exports.fetchOfficials = (req, res) => {
+      Common.fetchTourOfficials(req.body.tour_id, (err, data) => {
+        if (err) {
+          if (err.kind === "not_found") {
+              response.sendNoData(req, res, "No Record Found");
+          } else {
+              response.sendError(req, res, "Please try again");
+          }
+        } else{
+          response.sendResponse(req, res, data, "Officials list has been fetched successfully.");
+        }
+    });
+};

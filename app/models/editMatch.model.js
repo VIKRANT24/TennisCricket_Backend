@@ -5,29 +5,17 @@ const EditMatch = function () {
 };
 
 EditMatch.fetchAllMatchDetails = (tourid, result) => {
-
-  sql.query("SELECT * FROM  CRICONN_MATCHES AS CM INNER JOIN CRICONN_TEAMS ON CM AS CT INNER  ", [tourid], (err, res) => {
+  sql.query("SELECT (Select team_name from CRICONN_TEAMS where team_id = CM.team_one) as team1_name, (Select team_name from CRICONN_TEAMS where team_id = CM.team_two) as team2_name FROM  CRICONN_MATCHES AS CM where tour_id=?", [tourid], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
     if (res.length) {
-      sql.query("SELECT listmatches.*,status, t1.teamname as team1name, t2.teamname as team2name from listmatches INNER JOIN teams AS t1 ON t1.teamid=listmatches.team1 INNER JOIN teams AS t2 ON t2.teamid=listmatches.team2 where tournament_id=?", [tourid], (err, res1) => {
-        if (err) {
-          console.log("error: ", err);
-          result(null, res);
-          return;
-        }
-        if (res1.length) {
-          var result1 = res.concat(res1);
-          result(null, result1);
-          return;
-        }
-        result({ kind: "not_found" }, null);
-      });
+      result(null, res);
+      return;
     }
-    // result({ kind: "not_found" }, null);
+    result({ kind: "not_found" }, null);
   });
 };
 
