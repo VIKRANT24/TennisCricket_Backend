@@ -5,7 +5,7 @@ const EditMatch = function () {
 };
 
 EditMatch.fetchAllMatchDetails = (tourid, result) => {
-  sql.query("SELECT (Select team_name from CRICONN_TEAMS where team_id = CM.team_one) as team1_name, (Select team_name from CRICONN_TEAMS where team_id = CM.team_two) as team2_name FROM  CRICONN_MATCHES AS CM where tour_id=?", [tourid], (err, res) => {
+  sql.query("SELECT match_type, no_of_overs, place, match_status, date_time, (Select ground_name from CRICONN_GROUNDS where id = CM.ground_id) as ground_name, (Select team_name from CRICONN_TEAMS where team_id = CM.team_one) as team1_name, (Select team_name from CRICONN_TEAMS where team_id = CM.team_two) as team2_name FROM  CRICONN_MATCHES AS CM where tour_id=?", [tourid], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
