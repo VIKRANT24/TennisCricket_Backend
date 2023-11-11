@@ -51,7 +51,7 @@ module.exports = app => {
 
   //Edit Team Related Operation
   router.post("/editTeam/fetchTournamentPlayers", editTeam.fetchTournamentPlayers);
-  router.post("/editTeam/getTournamentTeams", editTeam.getTournamentTeam);
+  router.post("/editTeam/getTournamentTeam", editTeam.getTournamentTeam);
   router.post("/editTeam/getUserTeams", editTeam.getUserTeams);
   router.post("/editTeam/searchTeams", editTeam.searchTeams);
   router.post("/editTeam/getTournamentTeamSquad", editTeam.getTournamentTeamSquad);
