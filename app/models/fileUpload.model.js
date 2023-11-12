@@ -20,3 +20,23 @@ let uploadFile = multer({
 
 let uploadFileMiddleware = util.promisify(uploadFile);
 module.exports = uploadFileMiddleware;
+
+// var ImageKit = require("imagekit");
+// var fs = require('fs');
+
+// var imagekit = new ImageKit({
+//     publicKey : "public_D147u1wiAjbM3S/BmDF6YAYO1iQ=",
+//     privateKey : "private_BGlTShXYtWd5yMGaR5pzkWPT1Dc=",
+//     urlEndpoint : "https://ik.imagekit.io/cricimgupload"
+// });
+
+// var base64Img = "iVBORw0KGgoAAAAN";
+
+// imagekit.upload({
+//     file : base64Img, //required
+//     fileName : "my_file_name.jpg",   //required
+//     tags: ["tag1","tag2"]
+// }, function(error, result) {
+//     if(error) console.log(error);
+//     else console.log(result);
+// });

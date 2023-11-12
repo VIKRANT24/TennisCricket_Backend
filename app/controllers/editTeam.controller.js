@@ -30,6 +30,7 @@ exports.getTournamentTeam = (req, res) => {
         EditTeam.getTeamsPlayer(teamIDArr,1, (err, data1) => {
           for(let i=0;i<data.length;i++){
             var playerData=[];
+            if(data1!= null && data1!= undefined && data1.length>0){
             for(let j=0;j<data1.length;j++){
               var index = playerData.findIndex(object => object.player_id === data1[j].player_id);
               if(data[i].team_id==data1[j].team_id && index === -1){
@@ -37,6 +38,9 @@ exports.getTournamentTeam = (req, res) => {
               }
             }
             data[i].playerData = playerData;
+          }else{
+            data[i].playerData = [];
+          }
           }
           console.log(data);
           response.sendResponse(req, res, data, "Team Fetch Successfully");
