@@ -39,6 +39,8 @@ module.exports = app => {
   router.post("/player/editPlayer", player.editPlayer);
   router.post("/player/searchPlayers", player.searchPlayers);
   router.post("/player/fetchPlayerTeams", player.fetchPlayerTeams);
+  router.post("/player/addBatterRecord", player.addBatter);
+  router.post("/player/addBowlerRecord", player.addBowler);
 
   //Admin Related Operation(add Sub Admin, view Sub Admin, view Sub Admi Permission)
   router.post("/subAdmin/addSubAdmin", subAdmin.addSubAdmin);
@@ -48,6 +50,7 @@ module.exports = app => {
   //Edit Match Related Operation
   router.post("/editMatch/fetchAllMatchDetails", editMatch.fetchAllMatchDetails);
   router.post("/editMatch/scheduleMatch", editMatch.scheduleMatch);
+  router.post("/editMatch/matchRecord", editMatch.matchRecord);
 
   //Edit Team Related Operation
   router.post("/editTeam/fetchTournamentPlayers", editTeam.fetchTournamentPlayers);

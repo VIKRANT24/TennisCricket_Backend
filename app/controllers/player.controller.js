@@ -42,6 +42,7 @@ exports.searchPlayers = (req, res) => {
   });
 };
 exports.fetchPlayerTeams = (req, res) => {
+    
     User.fetchPlayerTeams(req.body.player_id, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -53,4 +54,22 @@ exports.fetchPlayerTeams = (req, res) => {
         response.sendResponse(req, res, data, "Teams has been fetched successfully.");
       }
   });
+};
+exports.addBatter = (req, res) => {
+    User.addBatter(req.body.player_id, req.body.match_id, req.body.tournament_id, req.body.runs, req.body.four, req.body.six, req.body.ball_faced, req.body.out_type, req.body.out_by, req.body.ground_id, req.body.place_id, (err, data) => {
+        if (err) {
+                response.sendError(req, res, "Please try again");
+        } else {
+            response.sendResponse(req, res, [], "Record has been added successfully");
+        }
+    });
+};
+exports.addBowler = (req, res) => {
+    User.addBowler(req.body.player_id, req.body.match_id, req.body.tournament_id, req.body.runs, req.body.balls, req.body.maidens, req.body.wickets, req.body.ground_id, req.body.place_id, (err, data) => {
+        if (err) {
+                response.sendError(req, res, "Please try again");
+        } else {
+            response.sendResponse(req, res, [], "Record has been added successfully");
+        }
+    });
 };

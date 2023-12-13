@@ -3,6 +3,9 @@ const Rosponse = require("../config/response");
 const response = new Rosponse();
 // Find a single Tutorial by Id
 exports.findUserByID = (req, res) => {
+    if(req.body.id == "" || req.body.id == null || req.body.id == undefined){
+      response.sendError(req, res, "Please provide User id");
+    }
     AllTournaments.findUserByID(req.body.id, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -17,6 +20,9 @@ exports.findUserByID = (req, res) => {
 };
 
 exports.getUserTournamentID = (req, res) => {
+  if(req.body.id == "" || req.body.id == null || req.body.id == undefined){
+    response.sendError(req, res, "Please provide User id");
+  }
     AllTournaments.getUserTournamentID(req.body.id, (err, data) => {  
     if (err) {
       if (err.kind === "not_found") {
@@ -31,6 +37,9 @@ exports.getUserTournamentID = (req, res) => {
 };
 
 exports.getUserTournament = (req, res) => {
+  if(req.body.tour_id == "" || req.body.tour_id == null || req.body.tour_id == undefined){
+    response.sendError(req, res, "Please provide Tournament id");
+  }
     AllTournaments.getUserTournament(req.body.tour_id, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
@@ -45,6 +54,9 @@ exports.getUserTournament = (req, res) => {
 };
 
 exports.getUserMainTournament = (req, res) => {
+  if(req.body.mainTournamentid == "" || req.body.mainTournamentid == null || req.body.mainTournamentid == undefined){
+    response.sendError(req, res, "Please provide Tournament id");
+  }
     AllTournaments.getUserMainTournament(req.body.mainTournamentid, (err, data) => {
       if (err) {
         if (err.kind === "not_found") {

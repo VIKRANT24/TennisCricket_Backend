@@ -88,6 +88,9 @@ exports.fetchUmpires = (req, res) => {
 };
 
 exports.fetchOfficials = (req, res) => {
+  if(req.body.tour_id == "" || req.body.tour_id == null || req.body.tour_id == undefined){
+    response.sendError(req, res, "Please provide Tournament id");
+  }
       Common.fetchTourOfficials(req.body.tour_id, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
