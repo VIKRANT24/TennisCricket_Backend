@@ -51,12 +51,14 @@ module.exports = app => {
   router.post("/editMatch/fetchAllMatchDetails", editMatch.fetchAllMatchDetails);
   router.post("/editMatch/scheduleMatch", editMatch.scheduleMatch);
   router.post("/editMatch/matchRecord", editMatch.matchRecord);
+  router.post("/editMatch/fetchMatchRecord", editMatch.fetchMatchRecord);
 
   //Edit Team Related Operation
   router.post("/editTeam/fetchTournamentPlayers", editTeam.fetchTournamentPlayers);
   router.post("/editTeam/getTournamentTeam", editTeam.getTournamentTeam);
   router.post("/editTeam/getUserTeams", editTeam.getUserTeams);
   router.post("/editTeam/searchTeams", editTeam.searchTeams);
+  router.post("/editTeam/fetchMatchPlayes", editTeam.fetchMatchPlayes);
   router.post("/editTeam/getTournamentTeamSquad", editTeam.getTournamentTeamSquad);
   router.post("/editTeam/addTeam", editTeam.insertTeam);
   router.post("/editTeam/addPlayerToSquad", editTeam.addPlayerToSquad);

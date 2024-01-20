@@ -86,6 +86,22 @@ EditTeam.searchTeams = (team_name, result) => {
     result({ kind: "not_found" }, null);
   });
 };
+
+EditTeam.fetchMatchPlayes = (team_one,team_two, result) => {
+    sql.query("SELECT * FROM CRICONN_TEAMS where team_name = ? or team_name = ?",[team_one,team_two], function (err, results) {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      if (results.length) {
+        result(null, results);
+        return;
+      }
+      result({ kind: "not_found" }, null);
+    });
+}; 
+
 EditTeam.getTournamentTeamSquad = (tourid, teamid, result) => {
   sql.query("SELECT teamid,tournamentid,T.playerid,playing11,P.playername,P.playerrole,P.playermobile FROM `teamsquad` as T inner join players as P on T.playerid=P.playerid  where tournamentid=? and teamid=?", [tourid, teamid], function (err, results) {
     if (err) {

@@ -42,3 +42,13 @@ exports.matchRecord = (req, res) => {
     }
   });
 };
+exports.fetchMatchRecord = (req, res) => {
+  EditMatch.fetchMatchRecord(req.body.match_id, (err, data) => {
+    if (err) {
+        response.sendError(req, res, "Please try again");
+    } else {
+      response.sendResponse(req, res, data, "Match record has been fetch successfully");
+    }
+  });
+};
+
