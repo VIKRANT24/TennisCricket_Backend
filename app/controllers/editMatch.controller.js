@@ -3,7 +3,7 @@ const Rosponse = require("../config/response");
 const response = new Rosponse();
 
 exports.fetchAllMatchDetails = (req, res) => {
-  if(req.body.tour_id == "" || req.body.tour_id == null || req.body.tour_id == undefined){
+  if(req.body.tourid == "" || req.body.tourid == null || req.body.tourid == undefined){
     response.sendError(req, res, "Please provide Tournament id");
   }
     EditMatch.fetchAllMatchDetails(req.body.tourid, (err, data) => {

@@ -87,8 +87,8 @@ EditTeam.searchTeams = (team_name, result) => {
   });
 };
 
-EditTeam.fetchMatchPlayes = (team_one,team_two, result) => {
-    sql.query("SELECT * FROM CRICONN_TEAMS where team_name = ? or team_name = ?",[team_one,team_two], function (err, results) {
+EditTeam.fetchMatchPlayes = (team_one,team_two,tour_id, result) => {
+    sql.query("SELECT * FROM CRICONN_TEAMS where team_name = ? or team_name = ? and tour_id = ?",[team_one,team_two,tour_id], function (err, results) {
       if (err) {
         console.log("error: ", err);
         result(err, null);

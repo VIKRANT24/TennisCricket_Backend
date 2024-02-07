@@ -116,7 +116,7 @@ exports.searchTeams = (req, res) => {
 };
 
 exports.fetchMatchPlayes = (req, res) => {
-  EditTeam.fetchMatchPlayes(req.body.team_one, req.body.team_two, (err, data) => {
+  EditTeam.fetchMatchPlayes(req.body.team_one, req.body.team_two, req.body.tour_id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         response.sendNoData(req, res, "No Record Found");
@@ -133,6 +133,7 @@ exports.fetchMatchPlayes = (req, res) => {
           for(let j=0;j<data1.length;j++){
             var index = playerData.findIndex(object => object.player_id === data1[j].player_id);
             if(data[i].team_id==data1[j].team_id && index === -1){
+              data1[j].is_Batting ='0';
               playerData.push(data1[j]);
             }
           }
@@ -142,7 +143,16 @@ exports.fetchMatchPlayes = (req, res) => {
         }
         }
         console.log(data);
-        response.sendResponse(req, res, data, "Team Fetch Successfully");
+        var obj = {};
+        for(let i=0;i<data.length;i++){
+          if(data[i].team_name ==req.body.team_one){
+            obj.team1_data = data[i];
+          }
+          if(data[i].team_name ==req.body.team_two){
+            obj.team2_data = data[i];
+          }
+        }
+        response.sendResponse(req, res, obj, "Team Fetch Successfully");
       })
     }
   });
