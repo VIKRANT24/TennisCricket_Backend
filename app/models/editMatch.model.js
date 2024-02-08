@@ -5,7 +5,7 @@ const EditMatch = function () {
 };
 
 EditMatch.fetchAllMatchDetails = (tourid, result) => {
-  sql.query("SELECT match_type, no_of_overs, place, match_status, date_time, (Select ground_name from CRICONN_GROUNDS where id = CM.ground_id) as ground_name, (Select team_name from CRICONN_TEAMS where team_id = CM.team_one) as team1_name, (Select team_name from CRICONN_TEAMS where team_id = CM.team_two) as team2_name FROM  CRICONN_MATCHES AS CM where tour_id=?", [tourid], (err, res) => {
+  sql.query("SELECT match_id, match_type, no_of_overs, place, match_status, date_time, (Select ground_name from CRICONN_GROUNDS where id = CM.ground_id) as ground_name, (Select team_name from CRICONN_TEAMS where team_id = CM.team_one) as team1_name, (Select team_name from CRICONN_TEAMS where team_id = CM.team_two) as team2_name FROM  CRICONN_MATCHES AS CM where tour_id=?", [tourid], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -58,7 +58,7 @@ EditMatch.matchRecord = (match_id, match_score, result) => {
       return;
     }
     if (reslt.length==0) {
-      sql.query("INSERT into CRICONN_MATCH_RECORDS (match_id,match_score) values (?,?)", [match_id, match_score], (err, res) => {
+      sql.query("INSERT IGNORE into CRICONN_MATCH_RECORDS (match_id,match_score) values (?,?)", [match_id, JSON.stringify(match_score)], (err, res) => {
         if (err) {
           console.log("error: ", err);
           result(err, null);
@@ -70,7 +70,7 @@ EditMatch.matchRecord = (match_id, match_score, result) => {
         }
       });
     }else{
-      sql.query("UPDATE CRICONN_MATCH_RECORDS SET ? WHERE match_id =?", [{ match_score: match_score }, match_id], (err, res) => {
+      sql.query("UPDATE CRICONN_MATCH_RECORDS SET ? WHERE match_id =?", [{ match_score:  JSON.stringify(match_score) }, match_id], (err, res) => {
         if (err) {
           console.log("error: ", err);
           result(err, null);
@@ -94,8 +94,17 @@ EditMatch.fetchMatchRecord = (match_id, result) => {
       return;
     }
     else {
-      result(null, res);
-      return;
+      console.log(res[0]);
+      if(res.length>0){
+        var matchScore = res[0].match_score;
+        res[0].match_score = JSON.parse(matchScore);
+        result(null, res);
+        return;
+      }else{
+        result(null, []);
+        return;
+      }
+
     }
   });
 }
