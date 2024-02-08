@@ -51,17 +51,39 @@ EditMatch.scheduleMatch = (tour_id,	team_one,	team_two,	team1_players,	team2_pla
 };
 
 EditMatch.matchRecord = (match_id, match_score, result) => {
-  sql.query("INSERT into CRICONN_MATCH_RECORDS (match_id,match_score) values (?,?)", [match_id, match_score], (err, res) => {
+  sql.query("SELECT * from CRICONN_MATCH_RECORDS WHERE match_id=?", [match_id], (error, reslt) => {
     if (err) {
-      console.log("error: ", err);
-      result(err, null);
+      console.log("error: ", error);
+      result(error, null);
       return;
     }
-    else {
-      result(null, []);
-      return;
+    if (reslt.length==0) {
+      sql.query("INSERT into CRICONN_MATCH_RECORDS (match_id,match_score) values (?,?)", [match_id, match_score], (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        }
+        else {
+          result(null, []);
+          return;
+        }
+      });
+    }else{
+      sql.query("UPDATE CRICONN_MATCH_RECORDS SET ? WHERE match_id =?", [{ match_score: match_score }, match_id], (err, res) => {
+        if (err) {
+          console.log("error: ", err);
+          result(err, null);
+          return;
+        }
+        else {
+          result(null, []);
+          return;
+        }
+      });
     }
-  });
+
+});
 }
 
 EditMatch.fetchMatchRecord = (match_id, result) => {
