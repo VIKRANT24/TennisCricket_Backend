@@ -52,7 +52,7 @@ EditMatch.scheduleMatch = (tour_id,	team_one,	team_two,	team1_players,	team2_pla
 
 EditMatch.matchRecord = (match_id, match_score, result) => {
   sql.query("SELECT * from CRICONN_MATCH_RECORDS WHERE match_id=?", [match_id], (error, reslt) => {
-    if (err) {
+    if (error) {
       console.log("error: ", error);
       result(error, null);
       return;
