@@ -34,7 +34,16 @@ exports.scheduleMatch = (req, res) => {
   });
 };
 exports.matchRecord = (req, res) => {
-  EditMatch.matchRecord(req.body.match_id, req.body.match_score, (err, data) => {
+  EditMatch.matchRecord(req.body.match_id, req.body.match_score, req.body.tour_id, req.body.ground_id, req.body.place_id, (err, data) => {
+    if (err) {
+        response.sendError(req, res, "Please try again");
+    } else {
+      response.sendResponse(req, res, [], "Match record has been added successfully");
+    }
+  });
+};
+exports.finalMatchRecord = (req, res) => {
+  EditMatch.finalMatchRecord(req.body.match_id, req.body.match_score, req.body.tour_id, req.body.ground_id, req.body.place, (err, data) => {
     if (err) {
         response.sendError(req, res, "Please try again");
     } else {
