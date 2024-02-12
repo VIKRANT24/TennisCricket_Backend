@@ -41,6 +41,10 @@ module.exports = app => {
   router.post("/player/fetchPlayerTeams", player.fetchPlayerTeams);
   router.post("/player/addBatterRecord", player.addBatter);
   router.post("/player/addBowlerRecord", player.addBowler);
+  router.post("/player/fetchPlayerList", player.fetchPlayerList);
+  router.post("/player/fetchPlayerStat", player.fetchPlayerStat);
+
+  
 
   //Admin Related Operation(add Sub Admin, view Sub Admin, view Sub Admi Permission)
   router.post("/subAdmin/addSubAdmin", subAdmin.addSubAdmin);
