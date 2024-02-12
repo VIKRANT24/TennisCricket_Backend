@@ -52,7 +52,7 @@ exports.finalMatchRecord = (req, res) => {
   });
 };
 exports.fetchMatchRecord = (req, res) => {
-  EditMatch.fetchMatchRecord(req.body.match_id, (err, data) => {
+  EditMatch.fetchMatchRecord(req.body.match_id, (err  , data) => {
     if (err) {
         response.sendError(req, res, "Please try again");
     } else {
