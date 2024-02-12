@@ -139,103 +139,118 @@ EditMatch.finalMatchRecord = (match_id, match_score, tour_id, ground_id, place, 
   match_stats.tour_id = tour_id;
   match_stats.ground_id = ground_id;
   match_stats.place = place;
-      sql.query("UPDATE CRICONN_MATCH_RECORDS SET ? WHERE match_id =?", [{ match_score: JSON.stringify(match_stats) }, match_id], (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-          result(err, null);
-          return;
-        }
-        else {
-          storeBattersRecord(match_batters, match_id, tour_id, ground_id, place);
-          storeBowlersRecord(match_bowlers, match_id, tour_id, ground_id, place);
-          result(null, []);
-          return;
-        }
-      });
+  sql.query("UPDATE CRICONN_MATCH_RECORDS SET ? WHERE match_id =?", [{ match_score: JSON.stringify(match_stats) }, match_id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    else {
+      storeBattersRecord(match_batters, match_id, tour_id, ground_id, place);
+      storeBowlersRecord(match_bowlers, match_id, tour_id, ground_id, place);
+      result(null, []);
+      return;
+    }
+  });
 }
 storeBattersRecord = (match_batters, match_id, tour_id, ground_id, place) => {
   console.log("match_batters1" + JSON.stringify(match_batters));
-  for(let i=0;i<match_batters.length;i++){
-  let plyer_id = match_batters[i].id;
-  let stats = match_batters[i];
-  stats.match_id = match_id;
-  stats.tour_id = tour_id;
-  stats.ground_id = ground_id;
-  stats.place = place;
-  let stats_arr = [];
-  stats_arr.push(stats);
-  sql.query("SELECT * from CRICONN_BATTER WHERE player_id=?", [plyer_id], (error, reslt) => {
-    if (error) {
-      console.log("error: ", error);
-      result(error, null);
-      return;
-    }
-    if (reslt.length == 0) {
-      sql.query("INSERT into CRICONN_BATTER (player_id,statistics) values (?,?)", [plyer_id, JSON.stringify(stats_arr)], (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-        }
-        else {
-          console.log("new record inserted");
-        }
-      });
-    } else {
-      let batsman_data = [];
-      batsman_data = reslt;
-      batsman_data[0].statistics = [...JSON.parse(batsman_data[0].statistics), ...stats_arr];
-      sql.query("UPDATE CRICONN_BATTER SET ? WHERE player_id =?", [{ statistics: JSON.stringify(batsman_data[0].statistics) }, plyer_id], (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-        }
-        else {
-          console.log("old record updated");
-        }
-      });
-    }
+  for (let i = 0; i < match_batters.length; i++) {
+    let plyer_id = match_batters[i].id;
+    let stats = match_batters[i];
+    stats.match_id = match_id;
+    stats.tour_id = tour_id;
+    stats.ground_id = ground_id;
+    stats.place = place;
+    let stats_arr = [];
+    stats_arr.push(stats);
+    sql.query("SELECT * from CRICONN_BATTER WHERE player_id=?", [plyer_id], (error, reslt) => {
+      if (error) {
+        console.log("error: ", error);
+        result(error, null);
+        return;
+      }
+      if (reslt.length == 0) {
+        sql.query("INSERT into CRICONN_BATTER (player_id,statistics) values (?,?)", [plyer_id, JSON.stringify(stats_arr)], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+          }
+          else {
+            console.log("new record inserted");
+          }
+        });
+      } else {
+        let batsman_data = [];
+        batsman_data = reslt;
+        batsman_data[0].statistics = [...JSON.parse(batsman_data[0].statistics), ...stats_arr];
+        sql.query("UPDATE CRICONN_BATTER SET ? WHERE player_id =?", [{ statistics: JSON.stringify(batsman_data[0].statistics) }, plyer_id], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+          }
+          else {
+            console.log("old record updated");
+          }
+        });
+      }
 
-  });
-}
+    });
+  }
 }
 storeBowlersRecord = (match_bowlers, match_id, tour_id, ground_id, place) => {
   console.log("match_bowlers1" + JSON.stringify(match_bowlers));
-  for(let i=0;i<match_bowlers.length;i++){
-  let plyer_id = match_bowlers[i].id;
-  let stats = match_bowlers[i];
-  stats.match_id = match_id;
-  stats.tour_id = tour_id;
-  stats.ground_id = ground_id;
-  stats.place = place;
-  let stats_arr = [];
-  stats_arr.push(stats);
-  sql.query("SELECT * from CRICONN_BOWLER WHERE player_id=?", [plyer_id], (error, reslt) => {
-    if (error) {
-      console.log("error: ", error);
-      result(error, null);
+  for (let i = 0; i < match_bowlers.length; i++) {
+    let plyer_id = match_bowlers[i].id;
+    let stats = match_bowlers[i];
+    stats.match_id = match_id;
+    stats.tour_id = tour_id;
+    stats.ground_id = ground_id;
+    stats.place = place;
+    let stats_arr = [];
+    stats_arr.push(stats);
+    sql.query("SELECT * from CRICONN_BOWLER WHERE player_id=?", [plyer_id], (error, reslt) => {
+      if (error) {
+        console.log("error: ", error);
+        result(error, null);
+        return;
+      }
+      if (reslt.length == 0) {
+        sql.query("INSERT into CRICONN_BOWLER (player_id,statistics) values (?,?)", [plyer_id, JSON.stringify(stats_arr)], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+          }
+          else {
+            console.log("new record inserted");
+          }
+        });
+      } else {
+        let bowler_data = [];
+        bowler_data = reslt;
+        bowler_data[0].statistics = [...JSON.parse(bowler_data[0].statistics), ...stats_arr];
+        sql.query("UPDATE CRICONN_BOWLER SET ? WHERE player_id =?", [{ statistics: JSON.stringify(bowler_data[0].statistics) }, plyer_id], (err, res) => {
+          if (err) {
+            console.log("error: ", err);
+          }
+          else {
+            console.log("old record updated");
+          }
+        });
+      }
+
+    });
+  }
+}
+EditMatch.setMatchStatus = (match_id, tour_id, match_status, result) => {
+  sql.query("UPDATE CRICONN_MATCHES SET ? WHERE match_id=? and tour_id=?", [{ match_status: match_status }, match_id, tour_id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
       return;
     }
-    if (reslt.length == 0) {
-      sql.query("INSERT into CRICONN_BOWLER (player_id,statistics) values (?,?)", [plyer_id, JSON.stringify(stats_arr)], (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-        }
-        else {
-          console.log("new record inserted");
-        }
-      });
-    } else {
-      let bowler_data = [];
-      bowler_data = reslt;
-      bowler_data[0].statistics = [...JSON.parse(bowler_data[0].statistics), ...stats_arr];
-      sql.query("UPDATE CRICONN_BOWLER SET ? WHERE player_id =?", [{ statistics: JSON.stringify(bowler_data[0].statistics) }, plyer_id], (err, res) => {
-        if (err) {
-          console.log("error: ", err);
-        }
-        else {
-          console.log("old record updated");
-        }
-      });
+    else {
+      result(null, []);
+      return;
     }
-
   });
-}}
+}
+
 module.exports = EditMatch;
