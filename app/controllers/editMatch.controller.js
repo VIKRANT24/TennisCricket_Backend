@@ -60,4 +60,13 @@ exports.fetchMatchRecord = (req, res) => {
     }
   });
 };
+exports.setMatchStatus = (req, res) => {
+  EditMatch.setMatchStatus(req.body.match_id, req.body.tour_id, req.body.match_status, (err  , data) => {
+    if (err) {
+        response.sendError(req, res, "Please try again");
+    } else {
+      response.sendResponse(req, res, data, "Match status has been updated successfully");
+    }
+  });
+};
 

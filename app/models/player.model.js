@@ -60,7 +60,7 @@ Player.addEditPlayer = (player_name, player_mobile, player_logo, player_place, p
     });
   }
   else {
-    sql.query('SELECT * FROM players WHERE playermobile = ? AND playerid <> ?', [playermobile, playerid], (err, res) => {
+    sql.query('SELECT * FROM CRICONN_PLAYERS WHERE playermobile = ? AND playerid <> ?', [playermobile, playerid], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -71,7 +71,7 @@ Player.addEditPlayer = (player_name, player_mobile, player_logo, player_place, p
         return;
       }
       else {
-        sql.query("UPDATE players SET ? WHERE playerid =?", [{ playername: playername, imgdata: "", playerrole: playerrole, playermobile: playermobile, email: email, batting: batting, bowling: bowling, dob: dob, city: city, state: state, country: country }, playerid], (err, res) => {
+        sql.query("UPDATE CRICONN_PLAYERS SET ? WHERE playerid =?", [{ playername: playername, imgdata: "", playerrole: playerrole, playermobile: playermobile, email: email, batting: batting, bowling: bowling, dob: dob, city: city, state: state, country: country }, playerid], (err, res) => {
           if (err) {
             console.log("error: ", err);
             result(err, null);
@@ -89,7 +89,7 @@ Player.addEditPlayer = (player_name, player_mobile, player_logo, player_place, p
 
 Player.fetchPlayerList = (playername, result) => {
   if (playername == "" || playername == undefined || playername == null) {
-    sql.query("SELECT * FROM players ORDER BY playerid DESC", (err, res) => {
+    sql.query("SELECT * FROM CRICONN_PLAYERS ORDER BY player_id DESC", (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -103,7 +103,7 @@ Player.fetchPlayerList = (playername, result) => {
     });
   }
   else {
-    sql.query("SELECT * FROM players WHERE playername =? ORDER BY playerid DESC", [playername], (err, res) => {
+    sql.query("SELECT * FROM CRICONN_PLAYERS WHERE playername =? ORDER BY player_id DESC", [playername], (err, res) => {
       if (err) {
         console.log("error: ", err);
         result(err, null);
@@ -174,5 +174,33 @@ Player.addBowler = (player_id, match_id, tournament_id, runs, balls, maidens, wi
     }
 
   })
+}
+
+Player.fetchPlayerStat = (player_id, result) => {
+  var bowler_stats = {};
+  var batsman_stats = {};
+  var player_stats = {};
+  sql.query("SELECT * FROM CRICONN_BOWLER WHERE player_id =?", [player_id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    if (res.length) {
+      bowler_stats = {"player_id":res[0].player_id, "statistics":JSON.parse(res[0].statistics)};
+    }
+    sql.query("SELECT * FROM CRICONN_BATTER WHERE player_id =?", [player_id], (err1, res1) => {
+      if (err1) {
+        console.log("error: ", err1);
+        result(err1, null);
+        return;
+      }
+      if (res1.length) {
+        batsman_stats = {"player_id":res1[0].player_id, "statistics":JSON.parse(res1[0].statistics)};
+      }
+      player_stats = {"batting_record":batsman_stats,"bowling_record":bowler_stats};
+      result(null, player_stats);
+    });
+  });
 }
 module.exports = Player;
