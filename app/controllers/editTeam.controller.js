@@ -279,9 +279,12 @@ exports.fetchPlayersForMatch = (req, res) => {
       EditTeam.getTeamPlayersById([...team_one,...team_two], (err, data1) => {
         console.log(data1)
         for(let i=0;i<data1.length;i++){
+          data1[i].is_Batting="0";
           if(team_one.includes(data1[i].player_id.toString())){
+            data1[i].team_id = data[0].team_one
             team_one_player.push(data1[i]);
           }else{
+            data1[i].team_id = data[0].team_two
             team_two_player.push(data1[i]);
           }
         }
