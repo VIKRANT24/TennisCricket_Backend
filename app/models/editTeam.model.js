@@ -213,4 +213,33 @@ EditTeam.updateSquadPlayer = (tourid, teamid, playerid, playing11, result) => {
   });
  };
  
+ EditTeam.fetchPlayersForMatch = (match_id, result) => {
+  sql.query("SELECT team1_players,team2_players FROM CRICONN_MATCHES WHERE match_id = ?", [match_id], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    else {
+      console.log("error: ", res);
+      result(null, res);
+      return;
+    }
+  });
+ };
+
+ EditTeam.getTeamPlayersById = (playerID, result) => {
+  sql.query("SELECT * FROM `CRICONN_PLAYERS` where player_id in (?) ",[playerID], (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    else {
+      console.log("error: ", res);
+      result(null, res);
+      return;
+    }
+  });
+ };
 module.exports = EditTeam;

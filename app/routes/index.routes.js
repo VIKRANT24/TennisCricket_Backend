@@ -74,6 +74,7 @@ module.exports = app => {
   router.post("/editTeam/updateTeam", editTeam.updateTeam);
   router.post("/editTeam/updateSquadPlayer", editTeam.updateSquadPlayer);
   router.post("/editTeam/getTeamsPlayer", editTeam.getTeamsPlayer);
+  router.post("/editTeam/fetchPlayersForMatch", editTeam.fetchPlayersForMatch);
 
   //tournament statistics
   router.post("/statistics/getTournamentBatting", statistics.fetchTournamentBatting);

@@ -263,3 +263,31 @@ EditTeam.getTeamsPlayer(req.body.teamid,0, (err, data) => {
   }
 })
 }
+exports.fetchPlayersForMatch = (req, res) => {
+  EditTeam.fetchPlayersForMatch(req.body.match_id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        response.sendNoData(req, res, "No Record Found");
+      } else {
+        response.sendError(req, res, "Please try again");
+      }
+    } else {
+      let team_one = data[0].team1_players.split(",");
+      let team_two = data[0].team2_players.split(",");
+      let team_one_player =[];
+      let team_two_player =[];
+      EditTeam.getTeamPlayersById([...team_one,...team_two], (err, data1) => {
+        console.log(data1)
+        for(let i=0;i<data1.length;i++){
+          if(team_one.includes(data1[i].player_id.toString())){
+            team_one_player.push(data1[i]);
+          }else{
+            team_two_player.push(data1[i]);
+          }
+        }
+        let obj = {"team_one":team_one_player,"team_two":team_two_player}
+        response.sendResponse(req, res, obj, "Team Fetch Successfully");
+      })
+    }
+  });
+};
