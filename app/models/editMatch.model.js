@@ -156,7 +156,7 @@ EditMatch.finalMatchRecord = (match_id, match_score, tour_id, ground_id, place, 
 storeBattersRecord = (match_batters, match_id, tour_id, ground_id, place) => {
   console.log("match_batters1" + JSON.stringify(match_batters));
   for (let i = 0; i < match_batters.length; i++) {
-    let plyer_id = match_batters[i].id;
+    let plyer_id = match_batters[i].p_id;
     let stats = match_batters[i];
     stats.match_id = match_id;
     stats.tour_id = tour_id;
