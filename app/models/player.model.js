@@ -171,7 +171,35 @@ Player.fetchPlayerStat = (player_id, result) => {
       return;
     }
     if (res.length) {
-      bowler_stats = { "player_id": res[0].player_id, "statistics": JSON.parse(res[0].statistics) };
+      let bowler_records = JSON.parse(res[0].statistics)
+      let maiden = 0;
+      let average = 0;
+      let runs = 0;
+      let balls = 0;
+      let innings = bowler_records.length;
+      let economy = 0;
+      let wicket = 0;
+      for (let i = 0; i < bowler_records.length; i++) {
+        console.log(bowler_records[i].over);
+        let over = bowler_records[i].over?bowler_records[i].over.toString().split(".")[0]:0;
+        let ball = bowler_records[i].over?bowler_records[i].over.toString().split(".")[1]:0;
+        if(over == undefined || over == null){
+          over = "0";
+        }
+        if(ball == undefined || ball == null){
+          ball = "0";
+        }
+        balls = balls+((Number(over)*6)+Number(ball));
+        maiden = bowler_records[i].maiden;
+        runs = runs + bowler_records[i].run;
+        wicket = wicket + bowler_records[i].wicket;
+      }
+      economy = (runs / (balls/6));
+      let roundedEconomy = (Math.floor(economy * 100) / 100).toFixed(2);
+      if(wicket>0){
+      average = runs / wicket;
+      }
+      bowler_stats = {"innings":innings, "balls":balls, "runs":runs, "maidens":maiden, "wickets":wicket, "average":average, "economy":roundedEconomy, "statistics": JSON.parse(res[0].statistics) };
     }
     sql.query("SELECT * FROM CRICONN_BATTER WHERE player_id =?", [player_id], (err1, res1) => {
       if (err1) {
@@ -180,9 +208,37 @@ Player.fetchPlayerStat = (player_id, result) => {
         return;
       }
       if (res1.length) {
-        batsman_stats = { "player_id": res1[0].player_id, "statistics": JSON.parse(res1[0].statistics) };
+        let batsman_record = JSON.parse(res1[0].statistics)
+        let highest = 0;
+        let average = 0;
+        let runs = 0;
+        let balls = 0;
+        let innings = batsman_record.length;
+        let strick_rate = 0;
+        let fours = 0;
+        let sixes = 0;
+        let fifty_count = 0;
+        let hundred_count = 0;
+        for (let i = 0; i < batsman_record.length; i++) {
+          if (batsman_record[i].run > highest) {
+            highest = batsman_record[i].run;
+          }
+          runs = runs + batsman_record[i].run;
+          balls = balls + batsman_record[i].ball;
+          fours = fours + batsman_record[i].four;
+          sixes = sixes + batsman_record[i].six;
+          if(batsman_record[i].run>=50 && batsman_record[i].run<100){
+            fifty_count=fifty_count+1;
+          }
+          if(batsman_record[i].run>=100){
+            hundred_count=hundred_count+1;
+          }
+        }
+        strick_rate = (runs / balls) * 100;
+        average = runs / batsman_record.length;
+        batsman_stats = {"fifty":fifty_count, "hundred":hundred_count, "fours":fours, "sixes":sixes, "highest": highest, "average": average, "runs": runs, "balls": balls, "innings": innings, "sr": strick_rate, "statistics": JSON.parse(res1[0].statistics) };
       }
-      player_stats = { "batting_record": batsman_stats, "bowling_record": bowler_stats };
+      player_stats = { "batting_record": batsman_stats, "bowling_record": bowler_stats, "player_id":player_id };
       result(null, player_stats);
     });
   });
