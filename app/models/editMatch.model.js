@@ -156,7 +156,7 @@ EditMatch.finalMatchRecord = (match_id, match_score, tour_id, ground_id, place, 
 storeBattersRecord = (match_batters, match_id, tour_id, ground_id, place) => {
   console.log("match_batters1" + JSON.stringify(match_batters));
   for (let i = 0; i < match_batters.length; i++) {
-    let plyer_id = match_batters[i].p_id;
+    let plyer_id = match_batters[i].p_id.toString();
     let stats = match_batters[i];
     stats.match_id = match_id;
     stats.tour_id = tour_id;
@@ -171,7 +171,7 @@ storeBattersRecord = (match_batters, match_id, tour_id, ground_id, place) => {
         return;
       }
       if (reslt.length == 0) {
-        sql.query("INSERT into CRICONN_BATTER (player_id,statistics) values (?,?)", [plyer_id, JSON.stringify(stats_arr)], (err, res) => {
+        sql.query("INSERT into CRICONN_BATTER (player_id,statistics,match_ids) values (?,?,?)", [plyer_id, JSON.stringify(stats_arr), match_id], (err, res) => {
           if (err) {
             console.log("error: ", err);
           }
@@ -182,8 +182,15 @@ storeBattersRecord = (match_batters, match_id, tour_id, ground_id, place) => {
       } else {
         let batsman_data = [];
         batsman_data = reslt;
+        let match_ids = batsman_data[0].match_ids ? batsman_data[0].match_ids : "";
+        if (!match_ids.includes(match_id)) {
+          if (match_ids == "") {
+            match_ids = match_id;
+          } else {
+            match_ids = match_ids + "," + match_id;
+          }
         batsman_data[0].statistics = [...JSON.parse(batsman_data[0].statistics), ...stats_arr];
-        sql.query("UPDATE CRICONN_BATTER SET ? WHERE player_id =?", [{ statistics: JSON.stringify(batsman_data[0].statistics) }, plyer_id], (err, res) => {
+        sql.query("UPDATE CRICONN_BATTER SET ?,? WHERE player_id =?", [{ statistics: JSON.stringify(batsman_data[0].statistics) },{match_ids:match_ids}, plyer_id], (err, res) => {
           if (err) {
             console.log("error: ", err);
           }
@@ -192,8 +199,9 @@ storeBattersRecord = (match_batters, match_id, tour_id, ground_id, place) => {
           }
         });
       }
-
+    }
     });
+    
   }
 }
 storeBowlersRecord = (match_bowlers, match_id, tour_id, ground_id, place) => {
@@ -214,7 +222,7 @@ storeBowlersRecord = (match_bowlers, match_id, tour_id, ground_id, place) => {
         return;
       }
       if (reslt.length == 0) {
-        sql.query("INSERT into CRICONN_BOWLER (player_id,statistics) values (?,?)", [plyer_id, JSON.stringify(stats_arr)], (err, res) => {
+        sql.query("INSERT into CRICONN_BOWLER (player_id,statistics,match_ids) values (?,?,?)", [plyer_id, JSON.stringify(stats_arr), match_id], (err, res) => {
           if (err) {
             console.log("error: ", err);
           }
@@ -225,15 +233,23 @@ storeBowlersRecord = (match_bowlers, match_id, tour_id, ground_id, place) => {
       } else {
         let bowler_data = [];
         bowler_data = reslt;
-        bowler_data[0].statistics = [...JSON.parse(bowler_data[0].statistics), ...stats_arr];
-        sql.query("UPDATE CRICONN_BOWLER SET ? WHERE player_id =?", [{ statistics: JSON.stringify(bowler_data[0].statistics) }, plyer_id], (err, res) => {
-          if (err) {
-            console.log("error: ", err);
+        let match_ids = bowler_data[0].match_ids ? bowler_data[0].match_ids : "";
+        if (!match_ids.includes(match_id)) {
+          if (match_ids == "") {
+            match_ids = match_id;
+          } else {
+            match_ids = match_ids + "," + match_id;
           }
-          else {
-            console.log("old record updated");
-          }
-        });
+          bowler_data[0].statistics = [...JSON.parse(bowler_data[0].statistics), ...stats_arr];
+          sql.query("UPDATE CRICONN_BOWLER SET ?,? WHERE player_id =?", [{ statistics: JSON.stringify(bowler_data[0].statistics) },{match_ids:match_ids}, plyer_id], (err, res) => {
+            if (err) {
+              console.log("error: ", err);
+            }
+            else {
+              console.log("old record updated");
+            }
+          });
+        }
       }
 
     });

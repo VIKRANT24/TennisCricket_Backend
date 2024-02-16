@@ -111,7 +111,7 @@ Tournament.addNewTournament = (tour_id, tour_name, current_season, creator_mobil
 
 Tournament.fetchMyTournament = (user_id, result) => {
   var get = {creator_id: user_id };
-  sql.query('SELECT * FROM CRICONN_TOURNAMENTS WHERE ? ', get, (err, res) => {
+  sql.query('SELECT * FROM CRICONN_TOURNAMENTS WHERE ? ORDER BY tour_id DESC', get, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
