@@ -3,7 +3,7 @@ const Rosponse = require("../config/response");
 const response = new Rosponse();
 
 exports.addPlayer = (req, res) => {
-    User.addEditPlayer(req.body.player_name, req.body.player_mobile, req.body.player_logo, req.body.player_place, req.body.player_email, req.body.player_dob, req.body.tour_id, req.body.team_id, req.body.is_selected, "add", (err, data) => {
+    User.addPlayer(req.body.player_name, req.body.player_mobile, req.body.player_logo, req.body.player_place, req.body.player_email, req.body.player_dob, req.body.tour_id, req.body.team_id, req.body.is_selected, (err, data) => {
         if (err) {
             if (err.kind === "Mobile number already exist") {
                 response.sendNoData(req, res, "Mobile number already exist");
@@ -16,7 +16,7 @@ exports.addPlayer = (req, res) => {
     });
 };
 exports.editPlayer = (req, res) => {
-    User.addEditPlayer(req.body.playername, req.body.imgdata, req.body.playerrole, req.body.playermobile, req.body.email, req.body.batting, req.body.bowling, req.body.dob, req.body.playerid, "edit", req.body.country, req.body.state, req.body.city, (err, data) => {
+    User.editPlayer(req.body.player_name, req.body.player_logo, req.body.player_place, req.body.player_email, req.body.player_dob, req.body.player_id, (err, data) => {
         if (err) {
             if (err.kind === "Mobile number already exist") {
                 response.sendNoData(req, res, "Mobile number already exist");
@@ -83,7 +83,7 @@ exports.fetchPlayerList = (req, res) => {
                 response.sendError(req, res, "Please try again");
             }
         } else {
-            response.sendResponse(req, res, data, "Teams has been fetched successfully.");
+            response.sendResponse(req, res, data, "Player list has been fetched successfully.");
         }
     });
 };
