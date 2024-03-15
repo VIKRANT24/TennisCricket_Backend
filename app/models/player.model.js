@@ -1,5 +1,10 @@
 const sql = require("./db.js");
-
+var ImageKit = require("imagekit");
+var imagekit = new ImageKit({
+  publicKey : "public_D147u1wiAjbM3S/BmDF6YAYO1iQ=",
+  privateKey : "private_BGlTShXYtWd5yMGaR5pzkWPT1Dc=",
+  urlEndpoint : "https://ik.imagekit.io/cricimgupload"
+});
 // constructor
 const Player = function () {
 };
@@ -18,43 +23,54 @@ Player.addPlayer = (player_name, player_mobile, player_logo, player_place, playe
       return;
     }
     else {
-      sql.query("INSERT INTO CRICONN_PLAYERS (player_name,	player_mobile,	player_logo,	player_place, player_email, player_dob) VALUES (?,?,?,?,?,?)", [player_name, player_mobile, player_logo, player_place, player_email, player_dob], (err1, res1) => {
-        if (err1) {
-          console.log("error: ", err1);
-          result(err1, null);
-          return;
-        }
-        else {
-          if (res1.insertId != null && res1.insertId != undefined && res1.insertId != 0) {
-            var playerID = res1.insertId
-            var playerUnqID = player_name + res1.insertId
-            sql.query("UPDATE CRICONN_PLAYERS SET ? WHERE player_id =?", [{ player_unqid: playerUnqID }, playerID], (err2, res2) => {
-              if (err2) {
-                console.log("error: ", err2);
-                result(err2, null);
-                return;
-              }
-              else {
-                sql.query("INSERT INTO CRICONN_PLAYER_DETAILS (tour_id, team_id, player_id,	is_selected) VALUES (?,?,?,?)", [tour_id, team_id, playerID, is_selected], (err3, res3) => {
-                  if (err3) {
-                    console.log("error: ", err3);
-                    result(err3, null);
-                    return;
-                  } else {
-                    console.log(res3.insertId);
-                    result(null, []);
+      imagekit.upload({
+        file : player_logo, //required
+        fileName : player_mobile+".jpg",   //required
+        // tags: ["tag1","tag2"]
+    }, function(error, imgresult) {
+        if(error){
+          result("please try after sometime", null);
+        }else{
+          console.log(imgresult.url)
+          sql.query("INSERT INTO CRICONN_PLAYERS (player_name,	player_mobile,	player_logo,	player_place, player_email, player_dob) VALUES (?,?,?,?,?,?)", [player_name, player_mobile, imgresult.url, player_place, player_email, player_dob], (err1, res1) => {
+            if (err1) {
+              console.log("error: ", err1);
+              result(err1, null);
+              return;
+            }
+            else {
+              if (res1.insertId != null && res1.insertId != undefined && res1.insertId != 0) {
+                var playerID = res1.insertId
+                var playerUnqID = player_name + res1.insertId
+                sql.query("UPDATE CRICONN_PLAYERS SET ? WHERE player_id =?", [{ player_unqid: playerUnqID }, playerID], (err2, res2) => {
+                  if (err2) {
+                    console.log("error: ", err2);
+                    result(err2, null);
                     return;
                   }
-
-                })
+                  else {
+                    sql.query("INSERT INTO CRICONN_PLAYER_DETAILS (tour_id, team_id, player_id,	is_selected) VALUES (?,?,?,?)", [tour_id, team_id, playerID, is_selected], (err3, res3) => {
+                      if (err3) {
+                        console.log("error: ", err3);
+                        result(err3, null);
+                        return;
+                      } else {
+                        console.log(res3.insertId);
+                        result(null, []);
+                        return;
+                      }
+    
+                    })
+                  }
+                });
+              } else {
+                result("please try after sometime", null);
+                return;
               }
-            });
-          } else {
-            result("please try after sometime", null);
-            return;
-          }
+            }
+          });
         }
-      });
+    });
     }
   });
 };
@@ -179,6 +195,7 @@ Player.fetchPlayerStat = (player_id, result) => {
       let innings = bowler_records.length;
       let economy = 0;
       let wicket = 0;
+      let totalOver = 0;
       for (let i = 0; i < bowler_records.length; i++) {
         console.log(bowler_records[i].over);
         let over = bowler_records[i].over?bowler_records[i].over.toString().split(".")[0]:0;
@@ -188,6 +205,9 @@ Player.fetchPlayerStat = (player_id, result) => {
         }
         if(ball == undefined || ball == null){
           ball = "0";
+          totalOver = Number(over)+totalOver;
+        }else{
+          totalOver = Number(over)+totalOver+1;
         }
         balls = balls+((Number(over)*6)+Number(ball));
         maiden = bowler_records[i].maiden;
@@ -199,7 +219,7 @@ Player.fetchPlayerStat = (player_id, result) => {
       if(wicket>0){
       average = runs / wicket;
       }
-      bowler_stats = {"innings":innings, "balls":balls, "runs":runs, "maidens":maiden, "wickets":wicket, "average":average, "economy":roundedEconomy, "statistics": JSON.parse(res[0].statistics) };
+      bowler_stats = {"innings":innings, "balls":balls, "over":totalOver, "runs":runs, "maidens":maiden, "wickets":wicket, "average":average, "economy":roundedEconomy, "statistics": JSON.parse(res[0].statistics) };
     }
     sql.query("SELECT * FROM CRICONN_BATTER WHERE player_id =?", [player_id], (err1, res1) => {
       if (err1) {
@@ -243,4 +263,19 @@ Player.fetchPlayerStat = (player_id, result) => {
     });
   });
 }
+
+// var base64Img = "iVBORw0KGgoAAAAN";
+// function uploadImage(base64Img,player_mobile){
+// imagekit.upload({
+//     file : base64Img, //required
+//     fileName : player_mobile+".jpg",   //required
+//     // tags: ["tag1","tag2"]
+// }, function(error, result) {
+//     if(error){
+//       return "";
+//     }else{
+//       return result.url;
+//     }
+// });
+// }
 module.exports = Player;

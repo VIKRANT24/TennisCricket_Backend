@@ -152,4 +152,5 @@ async function setCommentatorHistory(tour_id, commentator_ids){
     })
 }
 }
+
 module.exports = Tournament;
