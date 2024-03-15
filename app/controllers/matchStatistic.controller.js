@@ -57,4 +57,23 @@ exports.fetchFastestFiftyHundred = (req, res) => {
     }
   });
 };
+exports.fetchTournamentStats = (req, res) => {
+  MatchStatistics.fetchTournamentStats(req.body.tour_id, (err, data) => {
+    if (err) {
+      response.sendError(req, res, "Please try again");
+    } else{
+      response.sendResponse(req, res, data, "Fetch my tournament successfully");
+    }
+});
+};
+exports.fetchTournamentOverview = (req, res) => {
+  MatchStatistics.fetchTournamentOverview(req.body.tour_id, req.body.match_id, (err, data) => {
+    if (err) {
+      response.sendError(req, res, "Please try again");
+    } else{
+      response.sendResponse(req, res, data, "Fetch tournament data successfully");
+    }
+});
+};
+
 

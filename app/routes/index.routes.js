@@ -81,6 +81,9 @@ module.exports = app => {
   router.post("/statistics/getTournamentBolwing", statistics.fetchTournamentBolwing);
   router.post("/statistics/getTournamentPartnership", statistics.fetchTournamentPartnership);
   router.post("/statistics/getFastestFiftyHundred", statistics.fetchFastestFiftyHundred);
+  router.post("/statistics/fetchTournamentStats", statistics.fetchTournamentStats);
+  router.post("/statistics/fetchTournamentOverview", statistics.fetchTournamentOverview);
+  
 
   //ground related operation
   router.post("/ground/addGround", common.addGround);
