@@ -75,5 +75,14 @@ exports.fetchTournamentOverview = (req, res) => {
     }
 });
 };
+exports.fetchMVP = (req, res) => {
+  MatchStatistics.fetchMVP(req.body.tour_id, req.body.match_id, (err, data) => {
+    if (err) {
+      response.sendError(req, res, "Please try again");
+    } else{
+      response.sendResponse(req, res, data, "Fetch match data successfully");
+    }
+});
+};
 
 
