@@ -446,7 +446,7 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
               batter1Array[index].wickets =  wicketsData.length;
               batter1Array[index].isBallerPointAdded =  true;
             }else{
-              batter1Array.push({ "id": Number(item.id), "point": Number(bowlerTotalMVPPOintData.toFixed(2)), "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": wicketsData.length, "isBallerPointAdded":true})
+              batter1Array.push({ "id": Number(item.id), "point": Number(bowlerTotalMVPPOintData.toFixed(2)), "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": wicketsData.length?wicketsData.length:0, "isBallerPointAdded":true})
             }
           })
           fielderArray.filter((item) => {
