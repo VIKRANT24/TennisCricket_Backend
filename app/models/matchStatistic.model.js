@@ -395,6 +395,9 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
           })
           bowler1.filter((item) => {
             let wicketsData = item.wicketArray;
+            if(wicketsData == undefined || wicketsData == null){
+              wicketsData = [];
+            }
             let baseWicketScore = 0;
             let baseWicketTlScore = 0;
             let additionalWicketPoint = 0;
