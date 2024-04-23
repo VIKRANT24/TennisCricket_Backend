@@ -391,7 +391,7 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
               bonusPoint = ((item.strikeRate / team1SR) * SRDifference * 0.04) * basicPoint;
             }
             totalPoint = basicPoint + bonusPoint;
-            batter1Array.push({ "id": item.p_id, "name": item.name, "battingPoint": Number(totalPoint.toFixed(2)), "bowlingPoint": 0, "fieldingPoint": 0, "runs": item.run, "ballFaced": item.ball, "six": item.six, "four": item.four, "battingStrikeRate": item.strikeRate, "battingStatus": item.outReason, "wickets": 0,  "isBallerPointAdded":false})
+            batter1Array.push({ "id": item.p_id, "name": item.name, "point":Number(totalPoint.toFixed(2)), "battingPoint": Number(totalPoint.toFixed(2)), "bowlingPoint": 0, "fieldingPoint": 0, "runs": item.run, "ballFaced": item.ball, "six": item.six, "four": item.four, "battingStrikeRate": item.strikeRate, "battingStatus": item.outReason, "wickets": 0,  "isBallerPointAdded":false})
           })
           bowler1.filter((item) => {
             let wicketsData = item.wicketArray;
@@ -445,12 +445,13 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
             bowlerTotalMVPPOintData = Number(maidenOvrPoint) + Number(baseWicketTlScore) + Number(bonusPoint) + Number(additionalWicketPoint);
             let index = batter1Array.findIndex(x => x.id === Number(item.id));
             if(index != -1){
+              batter1Array[index].point = batter1Array[index].point+Number(bowlerTotalMVPPOintData.toFixed(2));
               batter1Array[index].bowlingPoint = Number(bowlerTotalMVPPOintData.toFixed(2));
               batter1Array[index].fieldingPoint = 0;
               batter1Array[index].wickets =  wicketsData.length;
               batter1Array[index].isBallerPointAdded =  true;
             }else{
-              batter1Array.push({ "id": Number(item.id), "name": item.name, "battingPoint": 0, "bowlingPoint": Number(bowlerTotalMVPPOintData.toFixed(2)), "fieldingPoint": 0, "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": wicketsData.length?wicketsData.length:0, "isBallerPointAdded":true})
+              batter1Array.push({ "id": Number(item.id), "name": item.name, "point":Number(bowlerTotalMVPPOintData.toFixed(2)), "battingPoint": 0, "bowlingPoint": Number(bowlerTotalMVPPOintData.toFixed(2)), "fieldingPoint": 0, "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": wicketsData.length?wicketsData.length:0, "isBallerPointAdded":true})
             }
           })
           fielderArray.filter((item) => {
@@ -489,11 +490,12 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
             filderBaseWicketTlScore = Number(filderBaseWicketScore) + Number(fielderBonus);
             let index = batter1Array.findIndex(x => x.id === Number(item.fielder_id1?item.fielder_id1:item.fielder_id));
             if(index != -1){
+                batter1Array[index].point = batter1Array[index].point+Number(filderBaseWicketTlScore.toFixed(2));
                 batter1Array[index].fieldingPoint = filderBaseWicketTlScore;
                 batter1Array[index].battingPoint = 0;
                 batter1Array[index].bowlingPoint = 0;
             }else{
-              batter1Array.push({ "id": Number(item.fielder_id1?item.fielder_id1:item.fielder_id), "name": item.name, "battingPoint": 0, "bowlingPoint": 0, "fieldingPoint": Number(filderBaseWicketTlScore.toFixed(2)), "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": 0, "isBallerPointAdded":false})
+              batter1Array.push({ "id": Number(item.fielder_id1?item.fielder_id1:item.fielder_id), "name": item.name, "point":Number(filderBaseWicketTlScore.toFixed(2)), "battingPoint": 0, "bowlingPoint": 0, "fieldingPoint": Number(filderBaseWicketTlScore.toFixed(2)), "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": 0, "isBallerPointAdded":false})
             }
           })
         }
