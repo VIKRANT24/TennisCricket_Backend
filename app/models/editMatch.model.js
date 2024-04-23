@@ -62,7 +62,7 @@ EditMatch.matchRecord = (match_id, match_score, tour_id, ground_id, place, resul
       return;
     }
     if (reslt.length == 0) {
-      sql.query("INSERT into CRICONN_MATCH_RECORDS (match_id,match_score) values (?,?)", [match_id, JSON.stringify(match_stats)], (err, res) => {
+      sql.query("INSERT into CRICONN_MATCH_RECORDS (match_id,match_score,tour_id) values (?,?)", [match_id, JSON.stringify(match_stats),tour_id], (err, res) => {
         if (err) {
           console.log("error: ", err);
           result(err, null);
