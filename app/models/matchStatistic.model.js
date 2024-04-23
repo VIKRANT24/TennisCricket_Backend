@@ -418,7 +418,7 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
             if (Number(bowlerSR) <= Number(team1SR)) {
               bonusPoint = 1
             }
-            if (wicketsData.length > 0) {
+            if (wicketsData != undefined && wicketsData != null && wicketsData.length > 0) {
               if (wicketsData.length >= 3 && wicketsData.length < 5) {
                 additionalWicketPoint = 0.5;
               }
