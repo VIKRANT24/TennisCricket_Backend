@@ -29,7 +29,7 @@ exports.scheduleMatch = (req, res) => {
         response.sendError(req, res, "Please try again");
       }
     } else {
-      response.sendResponse(req, res, [], "Match has been added successfully");
+      response.sendResponse(req, res, [data], "Match has been added successfully");
     }
   });
 };

@@ -42,7 +42,7 @@ EditMatch.scheduleMatch = (tour_id, team_one, team_two, team1_players, team2_pla
             return;
           }
           else {
-            result(null, []);
+            result(null, {"match_id":res.insertId});
             return;
           }
         });
