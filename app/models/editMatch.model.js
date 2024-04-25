@@ -52,6 +52,7 @@ EditMatch.scheduleMatch = (tour_id, team_one, team_two, team1_players, team2_pla
 
 EditMatch.matchRecord = (match_id, match_score, tour_id, ground_id, place, result) => {
   let match_stats = match_score;
+  console.log("------v-d-fd-f-d-fd-f-d-fd-f-d-f-d-fd-f-d"+tour_id)
   match_stats.tour_id = tour_id;
   match_stats.ground_id = ground_id;
   match_stats.place = place;
@@ -62,7 +63,7 @@ EditMatch.matchRecord = (match_id, match_score, tour_id, ground_id, place, resul
       return;
     }
     if (reslt.length == 0) {
-      sql.query("INSERT into CRICONN_MATCH_RECORDS (match_id,match_score) values (?,?)", [match_id, JSON.stringify(match_stats)], (err, res) => {
+      sql.query("INSERT into CRICONN_MATCH_RECORDS (match_id,match_score,tour_id) values (?,?,?)", [match_id, JSON.stringify(match_stats),tour_id], (err, res) => {
         if (err) {
           console.log("error: ", err);
           result(err, null);

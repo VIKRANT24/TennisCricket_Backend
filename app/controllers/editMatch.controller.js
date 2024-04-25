@@ -34,6 +34,7 @@ exports.scheduleMatch = (req, res) => {
   });
 };
 exports.matchRecord = (req, res) => {
+  console.log('------v-d-fd-f-d-fd-f-d-fd-f-d-f-d-fd-f-d'+req.body.tour_id)
   EditMatch.matchRecord(req.body.match_id, req.body.match_score, req.body.tour_id, req.body.ground_id, req.body.place_id, (err, data) => {
     if (err) {
         response.sendError(req, res, "Please try again");
