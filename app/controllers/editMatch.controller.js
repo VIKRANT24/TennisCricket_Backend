@@ -23,8 +23,8 @@ exports.scheduleMatch = (req, res) => {
   req.body.no_of_overs, req.body.place, req.body.ground_id, req.body.date_time, req.body.ball_type, req.body.pitch_type,req.body.umpire1_id, req.body.umpire2_id,
   req.body.umpire3_id, req.body.commentator_id, req.body.bowler_max_ovr, req.body.power_play,req.body.scorer_id, req.body.match_status, req.body.added_by, (err, data) => {
     if (err) {
-      if (err.kind === "This match is already present") {
-        response.sendNoData(req, res, "This match is already present");
+      if (err.kind === "This match is already exist") {
+        response.sendNoData(req, res, "This match is already exist");
       } else {
         response.sendError(req, res, "Please try again");
       }

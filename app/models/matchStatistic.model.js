@@ -349,25 +349,16 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
     }
     else {
       let batter1Array = [];
-      let bowlerArray = [];
-      let bowlerTotalMVPPOintData = 0;
+      let bowlerTotalMVPPOintData1 = 0;
       if (res.length) {
         let batter1 = [];
         let bowler1 = [];
-        let fielder1 = [];
         let team1Balls = 0;
-        let team2Balls = 0;
         let team1SR = 0;
-        let team2SR = 0;
-        let fielderBonus = 0;
         filderBaseWicketTlScore = 0;
         filderBaseWicketScore = 0;
         let maxOver = JSON.parse(res[0].match_score).maxOver ? JSON.parse(res[0].match_score).maxOver : 0;
         let baseRunsPerWkt = fetchBaseRunPerWicket(maxOver);
-        let fielderArray = [];
-        if (JSON.parse(res[0].match_score).fielderArray != null && JSON.parse(res[0].match_score).fielderArray != undefined) {
-          fielderArray = JSON.parse(res[0].match_score).fielderArray;
-        }
         if (JSON.parse(res[0].match_score).match.inning1 != null && JSON.parse(res[0].match_score).match.inning1 != undefined) {
           batter1 = JSON.parse(res[0].match_score).match.inning1.batters;
           bowler1 = JSON.parse(res[0].match_score).match.inning1.bowlers;
@@ -387,15 +378,15 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
             let basicPoint = item.run / 10;
             let SRDifference = item.strikeRate - team1SR >= 0 ? 1 : -1;
             let bonusPoint = 0
-            if(item.strikeRate>0 && team1SR>0){
+            if (item.strikeRate > 0 && team1SR > 0) {
               bonusPoint = ((item.strikeRate / team1SR) * SRDifference * 0.04) * basicPoint;
             }
             totalPoint = basicPoint + bonusPoint;
-            batter1Array.push({ "id": item.p_id, "name": item.name, "battingPoint": Number(totalPoint.toFixed(2)), "bowlingPoint": 0, "fieldingPoint": 0, "runs": item.run, "ballFaced": item.ball, "six": item.six, "four": item.four, "battingStrikeRate": item.strikeRate, "battingStatus": item.outReason, "wickets": 0,  "isBallerPointAdded":false})
+            batter1Array.push({ "id": item.p_id, "name": item.name, "battingPoint": Number(totalPoint.toFixed(2)), "bowlingPoint": 0, "fieldingPoint": 0, "runs": item.run, "ballFaced": item.ball, "six": item.six, "four": item.four, "battingStrikeRate": item.strikeRate, "battingStatus": item.outReason, "wickets": 0, "isBallerPointAdded": false })
           })
           bowler1.filter((item) => {
             let wicketsData = item.wicketArray;
-            if(wicketsData == undefined || wicketsData == null){
+            if (wicketsData == undefined || wicketsData == null) {
               wicketsData = [];
             }
             let baseWicketScore = 0;
@@ -442,68 +433,180 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
                 baseWicketTlScore = Number(baseWicketTlScore) + Number(baseWicketScore);
               })
             }
-            bowlerTotalMVPPOintData = Number(maidenOvrPoint) + Number(baseWicketTlScore) + Number(bonusPoint) + Number(additionalWicketPoint);
+            bowlerTotalMVPPOintData1 = Number(maidenOvrPoint) + Number(baseWicketTlScore) + Number(bonusPoint) + Number(additionalWicketPoint);
             let index = batter1Array.findIndex(x => x.id === Number(item.id));
-            if(index != -1){
-              batter1Array[index].bowlingPoint = Number(bowlerTotalMVPPOintData.toFixed(2));
+            if (index != -1) {
+              batter1Array[index].bowlingPoint = Number(bowlerTotalMVPPOintData1.toFixed(2));
               batter1Array[index].fieldingPoint = 0;
-              batter1Array[index].wickets =  wicketsData.length;
-              batter1Array[index].isBallerPointAdded =  true;
-            }else{
-              batter1Array.push({ "id": Number(item.id), "name": item.name, "battingPoint": 0, "bowlingPoint": Number(bowlerTotalMVPPOintData.toFixed(2)), "fieldingPoint": 0, "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": wicketsData.length?wicketsData.length:0, "isBallerPointAdded":true})
-            }
-          })
-          fielderArray.filter((item) => {
-            if(item.type =="runout" || item.type =="stumped"){        // fielder get full points.
-              if (item.order >= 1 && item.order <= 4) {
-                filderBaseWicketScore = baseRunsPerWkt / 10;
-                fielderBonus = (baseRunsPerWkt-item.batter_run)*0.02;
-              } else if (item.order >= 5 && item.order <= 8) {
-                filderBaseWicketScore = (baseRunsPerWkt * 80) / 1000;
-                fielderBonus = (((baseRunsPerWkt * 80) / 100)-item.batter_run)*0.02;
-              } else {
-                filderBaseWicketScore = (baseRunsPerWkt * 60) / 1000;
-                fielderBonus = (((baseRunsPerWkt * 60) / 100)-item.batter_run)*0.02;
-              }
-            }else if(item.type =="caught"){  // fielder get 20% and bowler get 80% points
-              fielderBonus=0;
-              if (item.order >= 1 && item.order <= 4) {
-                filderBaseWicketScore = (baseRunsPerWkt / 1000)*20;
-              } else if (item.order >= 5 && item.order <= 8) {
-                let score = (baseRunsPerWkt * 80) / 1000;
-                filderBaseWicketScore = (score* 20) /100;
-              } else {
-                let score = (baseRunsPerWkt * 60) / 1000;
-                filderBaseWicketScore = (score* 20) /100;
-              }
-              let index = batter1Array.findIndex(x => x.id === Number(item.b_id));
-              if( index != -1){
-                if(batter1Array[index].isBallerPointAdded == true){
-                  batter1Array[index].bowlingPoint = batter1Array[index].bowlingPoint - filderBaseWicketScore;
-                }
-              }
-            }else{                           // bowler get full points.
-              fielderBonus=0;
-              filderBaseWicketScore=0;
-            }
-            filderBaseWicketTlScore = Number(filderBaseWicketScore) + Number(fielderBonus);
-            let index = batter1Array.findIndex(x => x.id === Number(item.fielder_id1?item.fielder_id1:item.fielder_id));
-            if(index != -1){
-                batter1Array[index].fieldingPoint = Number(filderBaseWicketTlScore.toFixed(2));
-                batter1Array[index].battingPoint = 0;
-                batter1Array[index].bowlingPoint = 0;
-            }else{
-              batter1Array.push({ "id": Number(item.fielder_id1?item.fielder_id1:item.fielder_id), "name": item.name, "battingPoint": 0, "bowlingPoint": 0, "fieldingPoint": Number(filderBaseWicketTlScore.toFixed(2)), "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": 0, "isBallerPointAdded":false})
+              batter1Array[index].wickets = wicketsData.length;
+              batter1Array[index].isBallerPointAdded = true;
+            } else {
+              batter1Array.push({ "id": Number(item.id), "name": item.name, "battingPoint": 0, "bowlingPoint": Number(bowlerTotalMVPPOintData1.toFixed(2)), "fieldingPoint": 0, "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": wicketsData.length ? wicketsData.length : 0, "isBallerPointAdded": true })
             }
           })
         }
 
       }
       console.log(batter1Array);
+      let bowlerTotalMVPPOintData2 = 0;
+      let batter2 = [];
+      let bowler2 = [];
+      let team2Balls = 0;
+      let team2SR = 0;
+      let fielderBonus = 0;
+      filderBaseWicketTlScore = 0;
+      filderBaseWicketScore = 0;
+      let maxOver = JSON.parse(res[0].match_score).maxOver ? JSON.parse(res[0].match_score).maxOver : 0;
+      let baseRunsPerWkt = fetchBaseRunPerWicket(maxOver);
+      let fielderArray = [];
+      if (JSON.parse(res[0].match_score).fielderArray != null && JSON.parse(res[0].match_score).fielderArray != undefined) {
+        fielderArray = JSON.parse(res[0].match_score).fielderArray;
+      }
+      if (JSON.parse(res[0].match_score).match.inning2 != null && JSON.parse(res[0].match_score).match.inning2 != undefined) {
+        batter2 = JSON.parse(res[0].match_score).match.inning2.batters;
+        bowler2 = JSON.parse(res[0].match_score).match.inning2.bowlers;
+        let over = JSON.parse(res[0].match_score).match.inning2.overs ? JSON.parse(res[0].match_score).match.inning2.overs.toString().split(".")[0] : 0;
+        let ball = JSON.parse(res[0].match_score).match.inning2.overs ? JSON.parse(res[0].match_score).match.inning2.overs.toString().split(".")[1] : 0;
+        let runs = JSON.parse(res[0].match_score).match.inning2.runs;
+        let totalPoint = 0;
+        if (over == undefined || over == null) {
+          over = "0";
+        }
+        if (ball == undefined || ball == null) {
+          ball = "0";
+        }
+        team2Balls = team2Balls + ((Number(over) * 6) + Number(ball));
+        team2SR = (runs * 100) / team2Balls;
+        batter2.filter((item) => {
+          let basicPoint = item.run / 10;
+          let SRDifference = item.strikeRate - team2SR >= 0 ? 1 : -1;
+          let bonusPoint = 0
+          if (item.strikeRate > 0 && team2SR > 0) {
+            bonusPoint = ((item.strikeRate / team2SR) * SRDifference * 0.04) * basicPoint;
+          }
+          totalPoint = basicPoint + bonusPoint;
+          let index = batter1Array.findIndex(x => x.id === Number(item.p_id));
+          if (index != -1) {
+            batter1Array[index].battingPoint = Number(totalPoint.toFixed(2));
+          } else {
+            batter1Array.push({ "id": item.p_id, "name": item.name, "battingPoint": Number(totalPoint.toFixed(2)), "bowlingPoint": 0, "fieldingPoint": 0, "runs": item.run, "ballFaced": item.ball, "six": item.six, "four": item.four, "battingStrikeRate": item.strikeRate, "battingStatus": item.outReason, "wickets": 0, "isBallerPointAdded": false })
+          }
+        })
+        bowler2.filter((item) => {
+          let wicketsData = item.wicketArray;
+          if (wicketsData == undefined || wicketsData == null) {
+            wicketsData = [];
+          }
+          let baseWicketScore = 0;
+          let baseWicketTlScore = 0;
+          let additionalWicketPoint = 0;
+          let bowlerOver = item.over ? item.over.toString().split(".")[0] : 0;
+          let overBalls = item.over ? item.over.toString().split(".")[1] : 0;
+          let totalBalls = 0;
+          let BowlerRuns = item.run ? item.run : 0;
+          let bonusPoint = 0;
+          let maidenOvrPoint = calculateMdnOvrPnt(maxOver, item.maiden ? item.maiden : 0)
+          if (bowlerOver == undefined || bowlerOver == null) {
+            bowlerOver = "0";
+          }
+          if (overBalls == undefined || overBalls == null) {
+            overBalls = "0";
+          }
+          totalBalls = totalBalls + ((Number(bowlerOver) * 6) + Number(overBalls));
+          let bowlerSR = 0;
+          if (BowlerRuns > 0 && totalBalls > 0) {
+            bowlerSR = (BowlerRuns / totalBalls) * 100;
+          }
+          if (Number(bowlerSR) <= Number(team2SR)) {
+            bonusPoint = 1
+          }
+          if (wicketsData != undefined && wicketsData != null && wicketsData.length > 0) {
+            if (wicketsData.length >= 3 && wicketsData.length < 5) {
+              additionalWicketPoint = 0.5;
+            }
+            if (wicketsData.length >= 5 && wicketsData.length < 10) {
+              additionalWicketPoint = 1;
+            }
+            if (wicketsData.length >= 10) {
+              additionalWicketPoint = 1.5;
+            }
+            wicketsData.filter((wicketData) => {
+              if (wicketData.order >= 1 && wicketData.order <= 4) {
+                baseWicketScore = baseRunsPerWkt / 10;
+              } else if (wicketData.order >= 5 && wicketData.order <= 8) {
+                baseWicketScore = (baseRunsPerWkt * 80) / 1000;
+              } else {
+                baseWicketScore = (baseRunsPerWkt * 60) / 1000;
+              }
+              baseWicketTlScore = Number(baseWicketTlScore) + Number(baseWicketScore);
+            })
+          }
+          bowlerTotalMVPPOintData2 = Number(maidenOvrPoint) + Number(baseWicketTlScore) + Number(bonusPoint) + Number(additionalWicketPoint);
+          let index = batter1Array.findIndex(x => x.id === Number(item.id));
+          if (index != -1) {
+            batter1Array[index].bowlingPoint = Number(bowlerTotalMVPPOintData2.toFixed(2));
+            batter1Array[index].wickets = wicketsData.length;
+            batter1Array[index].isBallerPointAdded = true;
+          } else {
+            batter1Array.push({ "id": Number(item.id), "name": item.name, "battingPoint": 0, "bowlingPoint": Number(bowlerTotalMVPPOintData2.toFixed(2)), "fieldingPoint": 0, "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": wicketsData.length ? wicketsData.length : 0, "isBallerPointAdded": true })
+          }
+        })
+        fielderArray.filter((item) => {
+          if (item.type == "runout" || item.type == "stumped") {        // fielder get full points.
+            if (item.order >= 1 && item.order <= 4) {
+              filderBaseWicketScore = baseRunsPerWkt / 10;
+              fielderBonus = (baseRunsPerWkt - item.batter_run) * 0.02;
+            } else if (item.order >= 5 && item.order <= 8) {
+              filderBaseWicketScore = (baseRunsPerWkt * 80) / 1000;
+              fielderBonus = (((baseRunsPerWkt * 80) / 100) - item.batter_run) * 0.02;
+            } else {
+              filderBaseWicketScore = (baseRunsPerWkt * 60) / 1000;
+              fielderBonus = (((baseRunsPerWkt * 60) / 100) - item.batter_run) * 0.02;
+            }
+          } else if (item.type == "caught") {  // fielder get 20% and bowler get 80% points
+            fielderBonus = 0;
+            if (item.order >= 1 && item.order <= 4) {
+              filderBaseWicketScore = (baseRunsPerWkt / 1000) * 20;
+            } else if (item.order >= 5 && item.order <= 8) {
+              let score = (baseRunsPerWkt * 80) / 1000;
+              filderBaseWicketScore = (score * 20) / 100;
+            } else {
+              let score = (baseRunsPerWkt * 60) / 1000;
+              filderBaseWicketScore = (score * 20) / 100;
+            }
+            let index = batter1Array.findIndex(x => x.id === Number(item.b_id));
+            if (index != -1) {
+              if (batter1Array[index].isBallerPointAdded == true) {
+                batter1Array[index].bowlingPoint = Number((batter1Array[index].bowlingPoint - filderBaseWicketScore).toFixed(2));
+              }
+            }
+          } else {                           // bowler get full points.
+            fielderBonus = 0;
+            filderBaseWicketScore = 0;
+          }
+          filderBaseWicketTlScore = Number(filderBaseWicketScore) + Number(fielderBonus);
+          let index = batter1Array.findIndex(x => x.id === Number(item.fielder_id1 ? item.fielder_id1 : item.fielder_id));
+          if (index != -1) {
+            batter1Array[index].fieldingPoint = Number(filderBaseWicketTlScore.toFixed(2));
+          } else {
+            batter1Array.push({ "id": Number(item.fielder_id1 ? item.fielder_id1 : item.fielder_id), "name": item.name, "battingPoint": 0, "bowlingPoint": 0, "fieldingPoint": Number(filderBaseWicketTlScore.toFixed(2)), "runs": 0, "ballFaced": 0, "six": 0, "four": 0, "battingStrikeRate": 0, "battingStatus": "", "wickets": 0, "isBallerPointAdded": false })
+          }
+        })
+      }
+
+      console.log(batter1Array);
       batter1Array.filter((item) => {
-        item.point = item.battingPoint + item.bowlingPoint + item.fieldingPoint;
+        item.point = Number((item.battingPoint + item.bowlingPoint + item.fieldingPoint).toFixed(2));
+        delete item.isBallerPointAdded;
+        delete item.runs;
+        delete item.ballFaced;
+        delete item.six;
+        delete item.four;
+        delete item.battingStrikeRate;
+        delete item.battingStatus;
+        delete item.wickets;
       });
-      result(null, { "MVPPointsData": batter1Array});
+      result(null, { "MVPPointsData": batter1Array });
     }
   });
 }
