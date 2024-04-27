@@ -606,7 +606,7 @@ MatchStatistics.fetchMVP = (tour_id, match_id, result) => {
         delete item.battingStatus;
         delete item.wickets;
       });
-      result(null, { "MVPPointsData": batter1Array });
+      result(null, { "MVPPointsData": batter1Array.sort((a,b) =>{ a.point - b.point }) });
     }
   });
 }
