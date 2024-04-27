@@ -83,8 +83,8 @@ module.exports = app => {
   router.post("/statistics/getFastestFiftyHundred", statistics.fetchFastestFiftyHundred);
   router.post("/statistics/fetchTournamentStats", statistics.fetchTournamentStats);
   router.post("/statistics/fetchTournamentOverview", statistics.fetchTournamentOverview);
-  router.post("/statistics/fetchMVP", statistics.fetchMVP);
   
+
   //ground related operation
   router.post("/ground/addGround", common.addGround);
   router.get("/ground/fetchGround", common.fetchGround);

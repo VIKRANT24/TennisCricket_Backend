@@ -52,6 +52,7 @@ EditMatch.scheduleMatch = (tour_id, team_one, team_two, team1_players, team2_pla
 
 EditMatch.matchRecord = (match_id, match_score, tour_id, ground_id, place, result) => {
   let match_stats = match_score;
+  console.log("------v-d-fd-f-d-fd-f-d-fd-f-d-f-d-fd-f-d"+tour_id)
   match_stats.tour_id = tour_id;
   match_stats.ground_id = ground_id;
   match_stats.place = place;

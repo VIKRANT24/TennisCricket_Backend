@@ -233,7 +233,7 @@ MatchStatistics.fetchTournamentOverview = (tour_id, match_id, result) => {
             } else {
               JSONScore = {}
             }
-            data.push({ "no": no, "vs": team_one + " Vs " + team_two, "teamA": team_one, "teamB": team_two, "tossWon": tossWon, "electedToBat": electedTo, "date": formattedDate, "starts": time, "ground": ground, "place": place, "currentRunStack": currentRunStack, "currentStriker": currentStriker, "currentNStriker": currentNStriker, "currentBowler": currentBowler, "inning1": inning1, "inning2": inning2 })
+            data.push({ "no": no, "vs": team_one + " Vs " + team_two, "teamA": team_one, "teamB": team_two, "tossWon":tossWon, "electedToBat":electedTo, "date": formattedDate, "starts": time, "ground": ground, "place": place, "currentRunStack": currentRunStack, "currentStriker": currentStriker, "currentNStriker": currentNStriker, "currentBowler": currentBowler, "inning1": inning1, "inning2": inning2})
           }
           let obj = { "tour": { "id": tour_id, "matches": data } }
           result(null, obj);
@@ -328,7 +328,7 @@ MatchStatistics.fetchTournamentOverview = (tour_id, match_id, result) => {
             } else {
               JSONScore = {}
             }
-            data.push({ "no": no, "vs": team_one + " Vs " + team_two, "teamA": team_one, "teamB": team_two, "tossWon": tossWon, "electedToBat": electedTo, "date": formattedDate, "starts": time, "ground": ground, "place": place, "currentRunStack": currentRunStack, "currentStriker": currentStriker, "currentNStriker": currentNStriker, "currentBowler": currentBowler, "inning1": inning1, "inning2": inning2 })
+            data.push({ "no": no, "vs": team_one + " Vs " + team_two, "teamA": team_one, "teamB": team_two, "tossWon":tossWon, "electedToBat":electedTo, "date": formattedDate, "starts": time, "ground": ground, "place": place, "currentRunStack": currentRunStack, "currentStriker": currentStriker, "currentNStriker": currentNStriker, "currentBowler": currentBowler, "inning1": inning1, "inning2": inning2})
           }
           let obj = { "tour": { "id": tour_id, "matches": data } }
           result(null, obj);
