@@ -29,7 +29,7 @@ Player.addPlayer = (player_name, player_mobile, player_logo, player_place, playe
         // tags: ["tag1","tag2"]
     }, function(error, imgresult) {
         if(error){
-          result("please try after sometime", null);
+          result("please try after sometime............", null);
         }else{
           console.log(imgresult.url)
           sql.query("INSERT INTO CRICONN_PLAYERS (player_name,	player_mobile,	player_logo,	player_place, player_email, player_dob) VALUES (?,?,?,?,?,?)", [player_name, player_mobile, imgresult.url, player_place, player_email, player_dob], (err1, res1) => {
