@@ -8,7 +8,7 @@ exports.addPlayer = (req, res) => {
             if (err.kind === "Mobile number already exist") {
                 response.sendNoData(req, res, "Mobile number already exist");
             } else {
-                response.sendError(req, res, "Please try again");
+                response.sendError(req, res, "Please try again...");
             }
         } else {
             response.sendResponse(req, res, [], "Player has been added successfully");
